@@ -9,6 +9,10 @@ Website portofolio ini merupakan salah satu tugas mata kuliah PBP 2026/2027. Isi
 
 Walau ini merupakan tugas mata kuliah, tapi saya tertarik untuk mengembangkan website ini sepenuh hati❤️ Sampai jumpa di next week for next update, yippie!
 
+Progress Mingguan:
+Week 1 - Membuat project & setup django, melakukan integrasi ke PWS
+Week 2 - Membuat section baru "education" yang diisi dengan 5 konten foto selama menempuh pendidikan di Fasilkom & keterangan kuliah saat ini
+
 <!-- TUGAS 1 -->
 1. Untuk semantik HTML5 yang sudah saya gunakan sejauh ini adalah section yang saat ini digunakan pada dua bagian. Ada bagian hero section yang memuat "About Me" dan section education. Menurut saya elemen tersebut membantu saya dengan memisahkan dengan jelas content yang ada dengan membungkus masing-masing bagian. Selain itu section yang saya gunakan ini sangat berguna saat navigasi dari navbar (dengan <section id="ini nama section">). Dan yang paling mudah saya rasakan adalah kemudahan pengaturan margin tiap sectionnya.
 
