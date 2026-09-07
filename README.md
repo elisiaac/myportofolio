@@ -2,7 +2,7 @@ Nama : Elisia Catherine
 NPM  : 2506533570
 Kelas: PBP A
 
-Semoga PBP aku index A!
+Semoga PBP aku index A! AMIN.
 
 Deskripsi Project:
 Website portofolio ini merupakan salah satu tugas mata kuliah PBP 2026/2027. Isinya membahas mengenai siapa saya, pendidikan yang saya tempuh saat ini, pengalaman-pengalaman yang saya miliki, project yang pernah saya lakukan, dan sedikit tentang hobi saya.
