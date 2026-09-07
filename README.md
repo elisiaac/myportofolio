@@ -16,7 +16,7 @@ Week 2 - Membuat section baru "education" yang diisi dengan 5 konten foto selama
 <!-- TUGAS 1 -->
 1. Untuk semantik HTML5 yang sudah saya gunakan sejauh ini adalah section yang saat ini digunakan pada dua bagian. Ada bagian hero section yang memuat "About Me" dan section education. Menurut saya elemen tersebut membantu saya dengan memisahkan dengan jelas content yang ada dengan membungkus masing-masing bagian. Selain itu section yang saya gunakan ini sangat berguna saat navigasi dari navbar (dengan <section id="ini nama section">). Dan yang paling mudah saya rasakan adalah kemudahan pengaturan margin tiap sectionnya.
 
-Untuk elemen semantik seperti <article> dan <aside> belum saya gunakan sejauh ini.
+Untuk elemen semantik seperti article dan aside belum saya gunakan sejauh ini.
 
 
 2. Ada beberapa tantangan yang saya alami selama mengerjakan ini. Pertama, saya mengganti navigation bar yang ada di contoh tutorial 1 menjadi navbar glassmorph yang melayang. Kesulitannya muncul saat saya menambahkan efek hover pada tiap link dinavbar, di mana tampilan dari navbarnya jadi ikut melebar. Selain itu pada section education saya menambahkan gallery photos yang menunjukkan beberapa kegiatan saya selama berkuliah di Fasilkom, saat saya deploy saya menyadari adanya hal yang kurang oke secara experience di mobile, di mana posisi dari gallerynya sangat panjang sehingga agak "tidak memuaskan" untuk harus scroll berkali-kali. Sehingga saya mengevaluasinya dengan menyesuaikan ukuran untuk setiap photo sehingga experiencenya scroll tidak membuat bosan/jenuh. 
