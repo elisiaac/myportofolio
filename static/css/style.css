@@ -5,19 +5,18 @@
 }
 
 :root {
-    --ink: #1c1917;
-    --paper: #faf6f0;
-    --accent: #d95d39;
-    --accent-dark: #a8442a;
-    --line: #e3d9c9;
-    --text-muted: #6b6459;
+    --color-honeydew: #ECF5E2;
+    --color-tea-green: #D7E3A4;
+    --color-old-gold: #D4C04D;
+    --color-fern: #657733;
+    --color-rich-mahogany: #291100;
     --radius: 4px;
 }
 
 body {
     font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: var(--ink);
-    background-color: var(--paper);
+    color: var(--color-rich-mahogany);
+    background-color: var(--color-honeydew);
     line-height: 1.6;
 }
 
@@ -32,22 +31,40 @@ h1, .brand {
 }
 
 .site-header {
-    border-bottom: 1px solid var(--line);
+    position: fixed;
+    top: 20px;
+    inset-inline: 0;
+    height: auto; 
+    min-height: unset;
+    margin-inline: auto;
+    z-index: 100; /*biar jadi paling atas*/
+
+    width: fit-content;
+    max-width: calc(100% - 16px);
+    box-sizing: border-box;
+
+    border-radius: 100vw;
+    border : 2px solid var(--color-fern);
+    padding: 8px 18px;
+    background-color: color-mix(in srgb, var(--color-tea-green) 50%, transparent);
+    filter: drop-shadow(8px);
+    backdrop-filter: blur(4px);   
 }
 
 .site-header .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.25rem 1.5rem;
+    padding: 0.6rem 1.5rem;
+    gap: 40px;
 }
 
-.brand {
+/* .brand {  aku tidak menggunakan ini lagi
     font-size: 1.3rem;
     font-weight: 700;
-    color: var(--ink);
+    color: var(--color-rich-mahogany);
     text-decoration: none;
-}
+} */
 
 .site-header nav {
     display: flex;
@@ -55,13 +72,15 @@ h1, .brand {
 }
 
 .site-header nav a {
-    color: var(--ink);
+    position: relative;
+    display: inline-block;
+    color: var(--color-rich-mahogany);
     text-decoration: none;
-    font-size: 0.95rem;
+    font-size: 1rem;
 }
 
 .hero {
-    padding: 4.5rem 0 5rem;
+    padding: 7.5rem 0 5rem;
 }
 
 .hero-grid {
@@ -85,7 +104,7 @@ h1, .brand {
     font-size: 0.85rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--accent-dark);
+    color: var(--color-fern);
     font-weight: 700;
     margin-bottom: 0.75rem;
 }
@@ -96,7 +115,7 @@ h1, .brand {
 }
 
 .bio {
-    color: var(--text-muted);
+    color: var(--color-rich-mahogany);
     max-width: 480px;
     margin-bottom: 1.5rem;
 }
@@ -111,12 +130,13 @@ h1, .brand {
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: var(--text-muted);
+    color: var(--color-rich-mahogany);
     margin-bottom: 0.15rem;
 }
 
 .meta-row dd {
     font-weight: 600;
+    color: var(--color-rich-mahogany);
 }
 
 .social-links {
@@ -130,15 +150,16 @@ h1, .brand {
     font-size: 0.85rem;
     font-weight: 600;
     text-decoration: none;
-    color: var(--paper);
-    background-color: var(--ink);
+    color: var(--color-honeydew);
+    background-color: var(--color-old-gold);
     border-radius: var(--radius);
     padding: 0.5rem 1.1rem;
     transition: background-color 0.2s ease;
 }
 
 .social-link:hover {
-    background-color: var(--accent);
+    background-color: var(--color-rich-mahogany);
+    color: var(--color-old-gold);
 }
 
 .hero-photo {
