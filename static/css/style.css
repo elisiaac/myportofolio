@@ -10,6 +10,8 @@
     --color-old-gold: #D4C04D;
     --color-fern: #657733;
     --color-rich-mahogany: #291100;
+    --color-oak-moss : #2E3B1C;
+    --color-soft-cream : #FEF9F5;
     --radius: 4px;
 }
 
@@ -80,7 +82,7 @@ h1, .brand {
 }
 
 .hero {
-    padding: 7.5rem 0 5rem;
+    padding: 8.5rem 0 5rem;
 }
 
 .hero-grid {
@@ -174,8 +176,8 @@ h1, .brand {
     left: 1.25rem;
     width: 100%;
     height: 100%;
-    background-color: var(--accent);
-    border-radius: var(--radius);
+    background-color: var(--color-rich-mahogany);
+    border-radius: 3rem;
     z-index: 0;
 }
 
@@ -186,8 +188,8 @@ h1, .brand {
     width: 100%;
     aspect-ratio: 1 / 1;
     object-fit: cover;
-    border-radius: var(--radius);
-    border: 3px solid var(--ink);
+    border-radius: 3rem;
+    border: 3px solid var(--color-old-gold);
 }
 
 .site-footer {
@@ -213,4 +215,102 @@ h1, .brand {
     .social-links {
         justify-content: flex-start;
     }
+}
+
+/* Bagian Education */
+.section-title {
+    font-size: 3rem;
+    text-align : center;
+    margin-bottom: 2rem;
+}
+
+.education-card {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem;
+    background: var(--color-oak-moss);
+    border-radius: 10px;
+    border: 7px solid var(--color-rich-mahogany);
+    box-shadow: 0 8px 30px #03290f0a;
+    text-align: center;
+}
+
+.edu-gallery {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.photo-item {
+    width: 140px;
+    height: 120px;
+    border: 0.5rem solid var(--color-soft-cream);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.photo-arung {
+    width: 170px; /* dibedakan karena memiliki panjang yang berbeda */
+}
+.photo-arung .education-img {
+    object-fit: contain;
+}
+
+.education-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Bikin rotasinya satu-satu */
+.photo-item:nth-child(1) { transform: rotate(-5deg) translateY(4px); }
+.photo-item:nth-child(2) { transform: rotate(3deg) translateY(-6px); }
+.photo-item:nth-child(3) { transform: rotate(-2deg); }
+.photo-item:nth-child(4) { transform: rotate(4deg) translateY(-4px); }
+.photo-item:nth-child(5) { transform: rotate(-4deg) translateY(6px); }
+
+.photo-item:hover {
+    transform: rotate(0deg) scale(1.1);
+    box-shadow: 0 12px 30px rgba(158, 242, 113, 0.5);
+    z-index: 5;
+    }
+
+.education-period {
+    display: inline-block;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--color-honeydew);
+    margin-bottom: 0.5rem;
+}
+
+.education-degree {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-soft-cream);
+    margin-bottom: 1rem;
+}
+
+.education-institution {
+    font-size: 1rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+    border-radius: 50px;
+    width: fit-content;
+    color: var(--color-rich-mahogany);
+    font-weight: 700;
+    background-color: var(--color-honeydew);
+}
+
+.computer {
+    color: #0f19e1;
+    font-weight: 700;
+}
+
+.science {
+    color: #e11d1d;
+    font-weight: 700;
 }
