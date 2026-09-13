@@ -3,52 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elisia - Portfolio</title>
+    <title>{{ name }} - Portofolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Monda:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
     <header class="site-header">
         <div class="container">
             <nav>
-                <a href="#home">Home</a>
-                <a href="#education">Education</a>
-                <a href="#education">Experience</a>
-                <a href="#education">Ea</a>
-                <a href="#education">Contact</a>
+                <a href="{% url 'main:show_main' %}">Profile</a>
+                <a href="#education">Education</a> <!-- ini kalau navigasi ke dalam satu page yang sama-->
+                <a href="{% url 'main:show_experience' %}">Experience</a>
             </nav>
         </div>
     </header>
 
     <main>
+        <!-- ini section hero (profile) -->
         <section class="hero" id="profile">
             <div class="container hero-grid">
+                <div class="glass-card"></div>
                 <div class="hero-identity">
                     <p class="hero-kicker">Information Systems &middot; Universitas Indonesia</p>
-                    <h1>Elisia Catherine</h1>
+                    <h1>{{ name }}</h1>
                 </div>
                 <div class="hero-photo">
-                    <div class="photo-block"></div>
-                    <img class="avatar" src="/static/img/Elisia_Jakun.png" alt="Photo of Elisia">
+                    <img class="avatar" src="/static/img/Elisia_Photo.png" alt="Photo of {{ name }}">
                 </div>
                 <div class="hero-details">
-                    <p class="bio">3rd-semester student at Universitas Indonesia, passionate about web development. Constantly learning, building, and improving my skills.</p>
+                    <p class="bio">{{ bio }}</p>
                     <dl class="meta-list">
                         <div class="meta-row">
                             <dt>NPM</dt>
-                            <dd>2506533570</dd>
+                            <dd>{{ npm }}</dd>
                         </div>
                         <div class="meta-row">
                             <dt>Program</dt>
-                            <dd>S1 Sistem Informasi</dd>
+                            <dd>{{ study_program }}</dd>
                         </div>
                     </dl>
                     <div class="social-links">
-                        <a href="https://github.com/elisiaac" class="social-link">GitHub</a>
-                        <a href="https://www.linkedin.com/in/elisiac" class="social-link">LinkedIn</a>
-                        <a href="mailto:elisiacatherine@gmail.com" class="social-link">Email</a>
+                        <a href="https://github.com/elisiaac" target="_blank" class="social-btn">
+                            <i class="fa-brands fa-github"></i>
+                            <span class="social-text">GitHub</span>
+                        </a>
+                        <a href="https://www.instagram.com/elisiaac/?utm_source=ig_web_button_share_sheet" target="_blank" class="social-btn">
+                            <i class="fa-brands fa-instagram"></i>
+                            <span class="social-text">Instagram</span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/elisiac" target="_blank" class="social-btn">
+                            <i class="fa-brands fa-linkedin"></i>
+                            <span class="social-text">LinkedIn</span>
+                        </a>
+                        <a href="mailto:elisiacatherine@gmail.com" class="social-btn">
+                            <i class="fa-solid fa-envelope"></i>
+                            <span class="social-text">Email</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ini section education eli -->
+        <section class="edu-section" id="education">
+            <div class="container">
+                <h2 class="section-title">Education</h2>
+                <div class="education-card">
+                    <div class="edu-gallery">
+                        <div class="photo-item">
+                            <img src="/static/img/Kombistek.jpg" alt="Kombistek Team" class="education-img">
+                        </div>
+                        <div class="photo-item">
+                            <img src="/static/img/Elisia_Jakun.png" alt="Berjakun" class="education-img">
+                        </div>
+                        <div class="photo-item photo-arung">
+                            <img src="/static/img/MyPacil.JPEG" alt="Arung 2025" class="education-img">
+                        </div>
+                        <div class="photo-item">
+                            <img src="/static/img/Love.jpg" alt="My Love" class="education-img">
+                        </div>
+                        <div class="photo-item">
+                            <img src="/static/img/Parade.jpg" alt="Parade UI 2025" class="education-img">
+                        </div>
+                    </div>
+                    
+                    <div class="education-content">
+                        <span class="education-period">2025 – Present</span>
+                        <h3 class="education-degree">Undergraduate in Information Systems</h3>
+                        <p class="education-institution">Faculty of <span class="computer">Computer</span><span class="science"> Science</span>, Universitas Indonesia</p>
                     </div>
                 </div>
             </div>
@@ -57,7 +102,7 @@
 
     <footer class="site-footer">
         <div class="container">
-            <p>&copy; 2026 Elisia Catherine. Fakultas Ilmu Komputer, Universitas Indonesia.</p>
+            <p>&copy; 2026 {{ name }}. Fakultas Ilmu Komputer, Universitas Indonesia.</p>
         </div>
     </footer>
 </body>
