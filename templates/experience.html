@@ -6,8 +6,8 @@
     <title>Experience - {{ name }}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Monda:wght@400..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
@@ -15,6 +15,7 @@
         <div class="container">
             <nav>
                 <a href="{% url 'main:show_main' %}">Profile</a>
+                <a href="{% url 'main:show_main' %}#education">Education</a>
                 <a href="{% url 'main:show_experience' %}">Experience</a>
             </nav>
         </div>
@@ -23,8 +24,7 @@
     <main>
         <section class="experience-section" id="experience">
             <div class="container">
-                <p class="section-kicker">Perjalanan saya sejauh ini</p>
-                <h1>Experience</h1>
+                <h1>My Journey so far!</h1>
 
                 <div class="experience-grid">
                     {% for experience in experience_list %}

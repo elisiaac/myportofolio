@@ -6,21 +6,31 @@
 }
 
 :root {
+    --font-heading: 'Fraunces', Georgia, serif;
+    --font-body: 'Monda', sans-serif;
+
     --color-honeydew: #ECF5E2;
     --color-tea-green: #D7E3A4;
     --color-old-gold: #D4C04D;
     --color-fern: #657733;
     --color-rich-mahogany: #291100;
-    --color-oak-moss : #2E3B1C;
-    --color-soft-cream : #FEF9F5;
+    --color-oak-moss: #2E3B1C;
+    --color-soft-cream: #FEF9F5;
     --radius: 4px;
 }
 
 body {
-    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: var(--font-body);
     color: var(--color-rich-mahogany);
     background-color: var(--color-honeydew);
     line-height: 1.6;
+    /* Ini saya mau buat background */
+    /* Garis vertikal & horizontal berulang-ulang */
+    background-image: 
+        linear-gradient(to right, rgba(101, 119, 51, 0.15) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(101, 119, 51, 0.15) 1px, transparent 1px);
+    /* Ukuran tiap kotak gridnyah */
+    background-size: 50px 50px;
 }
 
 .container {
@@ -64,6 +74,7 @@ body {
 }
 
 .site-header nav a {
+    font-family: var(--font-body);
     position: relative;
     display: inline-block;
     color: var(--color-rich-mahogany);
@@ -71,7 +82,7 @@ body {
     border-bottom: 3px solid transparent;
     text-decoration: none;
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 600;
 }
 
 nav a:hover {
@@ -116,7 +127,8 @@ nav a:hover {
 }
 
 .hero-kicker {
-    font-size: 0.85rem;
+    font-size: 0.75em;
+    font-family: var(--font-body);
     letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--color-fern);
@@ -125,9 +137,20 @@ nav a:hover {
 }
 
 .hero-identity h1 {
+    font-family: var(--font-heading);
     font-size: clamp(3rem, 7vw, 5rem);
     line-height: 0.95;
     font-weight: 900;
+    animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+    0%, 100% {
+        text-shadow: 0 0 0 transparent;
+    }
+    50% {
+        text-shadow: 0 0 18px rgba(102, 131, 35, 0.75);
+    }
 }
 
 .bio {
@@ -143,7 +166,9 @@ nav a:hover {
 }
 
 .meta-row dt {
-    font-size: 0.75rem;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--color-rich-mahogany);
@@ -216,17 +241,15 @@ nav a:hover {
     grid-area: photo;
     align-self: center;
     position: relative;
+    box-shadow: 4px 6px 10px rgba(6, 39, 4, 0.2);
+    transform: rotate(5deg) translateY(4px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.photo-block {
-    position: absolute;
-    top: 1.25rem;
-    left: 1.25rem;
-    width: 100%;
-    height: 100%;
-    background-color: var(--color-rich-mahogany);
-    border-radius: 3rem;
-    z-index: 0;
+.hero-photo:hover {
+    transform: rotate(0deg) scale(1.1);
+    box-shadow: 0 12px 30px rgba(138, 129, 39, 0.5);
+    z-index: 5;
 }
 
 .avatar {
@@ -234,10 +257,8 @@ nav a:hover {
     z-index: 1;
     display: block;
     width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    border-radius: 3rem;
-    border: 3px solid var(--color-old-gold);
+    height: auto;
+    object-fit: contain;
 }
 
 .site-footer {
@@ -254,22 +275,42 @@ nav a:hover {
             "identity"
             "photo"
             "details";
+        text-align: center;
+        justify-items: center;
     }
 
     .hero-photo {
         max-width: 220px;
     }
 
+    .meta-list {
+        justify-content: center;
+    }
+
     .social-links {
-        justify-content: flex-start;
+        justify-content: center;
+
     }
 }
 
 /* Bagian Education */
 .section-title {
+    font-family: var(--font-heading);
     font-size: 3rem;
     text-align : center;
     margin-bottom: 2rem;
+    animation: letterReveal 0.8s ease-out both;
+}
+
+@keyframes letterReveal {
+    from {
+        opacity: 0;
+        letter-spacing: -0.08em;
+    }
+    to {
+        opacity: 1;
+        letter-spacing: normal;
+    }
 }
 
 .education-card {
@@ -325,7 +366,7 @@ nav a:hover {
     transform: rotate(0deg) scale(1.1);
     box-shadow: 0 12px 30px rgba(158, 242, 113, 0.5);
     z-index: 5;
-    }
+}
 
 .education-period {
     display: inline-block;
@@ -363,22 +404,20 @@ nav a:hover {
     font-weight: 700;
 }
 
-.experience-section {
-    padding: 4rem 0;
-    border-top: 1px solid var(--color-rich-mahogany);
-}
+/* Ini untuk bagian experience ia */
 
-.section-kicker {
-    color: var(--color-oak-moss);
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+.experience-section {
+    margin-top: 3rem;
+    padding: 4rem 0;
 }
 
 .experience-section h1 {
+    font-family: var(--font-heading);
     margin: 0.4rem 0 1.5rem;
-    font-size: 2rem;
+    font-size: 3rem;
+    font-weight: 800;
+    text-align: center;
+    animation: letterReveal 0.8s ease-out both;
 }
 
 .experience-grid {
@@ -397,7 +436,7 @@ nav a:hover {
 .experience-category {
     color: var(--color-oak-moss);
     font-size: 0.75rem;
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
 }
 
