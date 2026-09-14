@@ -214,3 +214,167 @@ h1, .brand {
         justify-content: flex-start;
     }
 }
+
+/* Bagian Education */
+.section-title {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    text-align : center;
+    margin-bottom: 2rem;
+    animation: letterReveal 0.8s ease-out both;
+}
+
+@keyframes letterReveal {
+    from {
+        opacity: 0;
+        letter-spacing: -0.08em;
+    }
+    to {
+        opacity: 1;
+        letter-spacing: normal;
+    }
+}
+
+.education-card {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem;
+    background: var(--color-oak-moss);
+    border-radius: 10px;
+    border: 7px solid var(--color-rich-mahogany);
+    box-shadow: 0 8px 30px #03290f0a;
+    text-align: center;
+}
+
+.edu-gallery {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+.photo-item {
+    width: 120px;
+    height: 120px;
+    border: 0.5rem solid var(--color-soft-cream);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.photo-arung {
+    width: 170px; /* dibedakan karena memiliki panjang yang berbeda */
+}
+.photo-arung .education-img {
+    object-fit: contain;
+}
+
+.education-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Bikin rotasinya satu-satu */
+.photo-item:nth-child(1) { transform: rotate(-5deg) translateY(4px); }
+.photo-item:nth-child(2) { transform: rotate(3deg) translateY(-6px); }
+.photo-item:nth-child(3) { transform: rotate(-2deg); }
+.photo-item:nth-child(4) { transform: rotate(4deg) translateY(-4px); }
+.photo-item:nth-child(5) { transform: rotate(-4deg) translateY(6px); }
+
+.photo-item:hover {
+    transform: rotate(0deg) scale(1.1);
+    box-shadow: 0 12px 30px rgba(158, 242, 113, 0.5);
+    z-index: 5;
+}
+
+.education-period {
+    display: inline-block;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--color-honeydew);
+    margin-bottom: 0.5rem;
+}
+
+.education-degree {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-soft-cream);
+    margin-bottom: 1rem;
+}
+
+.education-institution {
+    font-size: 1rem;
+    margin: 0 auto;
+    padding: 0 1rem;
+    border-radius: 50px;
+    width: fit-content;
+    color: var(--color-rich-mahogany);
+    font-weight: 700;
+    background-color: var(--color-honeydew);
+}
+
+.computer {
+    color: #0f19e1;
+    font-weight: 700;
+}
+
+.science {
+    color: #e11d1d;
+    font-weight: 700;
+}
+
+/* Ini untuk bagian experience ia */
+
+.experience-section {
+    margin-top: 3rem;
+    padding: 4rem 0;
+}
+
+.experience-section h1 {
+    font-family: var(--font-heading);
+    margin: 0.4rem 0 1.5rem;
+    font-size: 3rem;
+    font-weight: 800;
+    text-align: center;
+    animation: letterReveal 0.8s ease-out both;
+}
+
+.experience-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+}
+
+.experience-card {
+    padding: 1.25rem;
+    background-color: color-mix(in srgb, var(--color-tea-green) 50%, transparent);
+    border: 3px solid var(--color-fern);
+    border-radius: 30px;
+    backdrop-filter: blur(1.5px);   
+}
+
+.experience-category {
+    color: var(--color-oak-moss);
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.experience-card h2 {
+    margin: 0.5rem 0;
+    font-size: 1.25rem;
+}
+
+.experience-description,
+.empty-state {
+    color: var(--color-old-gold);
+}
+
+.experience-status {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
