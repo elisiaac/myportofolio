@@ -463,6 +463,7 @@ nav a:hover {
     margin: 0 auto;
 }
 
+/* Ini jadi wrapper terluar tiap kartu (buat nentuin dimensi dan perspektifnya) */
 .experience-card {
     height: 380px;
     perspective: 1000px;
@@ -477,13 +478,14 @@ nav a:hover {
     transform-style: preserve-3d;
 }
 
+/* Trigger buat rotasi 180 derajat di sumbu Y saat di hover pake kursor */
 .experience-card:hover .card-inner {
     transform: rotateY(180deg);
 }
 
 .card-front,
 .card-back {
-    position: absolute;
+    position: absolute; /* untuk numpuk kedua sisi di posisi yang sama persis */
     width: 100%;
     height: 100%;
     box-sizing: border-box;
@@ -494,7 +496,7 @@ nav a:hover {
         var(--color-tea-green) 50%,
         transparent
     );
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px); /* Efek blur kaca agar match sama navbar*/
     backface-visibility: hidden;
 }
 
@@ -513,7 +515,7 @@ nav a:hover {
     color: var(--color-oak-moss);
     font-size: 0.7rem;
     font-weight: 800;
-    text-transform: uppercase;
+    text-transform: uppercase; /* ngubah teks jadi huruf kapital semua */
 }
 
 .experience-image {
@@ -521,7 +523,7 @@ nav a:hover {
     height: 180px;
     margin-top: 0.6rem;
     border-radius: 18px;
-    overflow: hidden;
+    overflow: hidden;  /* meng-hide gambar yang keluar dari border-radius */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -534,6 +536,7 @@ nav a:hover {
     object-fit: cover;
 }
 
+/* ini teks placeholder/icon jika tidak ada gambar */
 .photo-experience span {
     font-size: 1.5rem;
     font-weight: 600;
@@ -543,6 +546,7 @@ nav a:hover {
     padding: 0.8rem 0.3rem;
 }
 
+/* Judul pengalaman/nama acaranya/posisi */
 .experience-info h2 {
     margin: 0.7rem 0 0.3rem;
     font-family: var(--font-heading);
@@ -562,6 +566,8 @@ nav a:hover {
     font-weight: 700;
 }
 
+
+/* Mengatur kartu bagian belakang -> ini yang muncul saat di hover (ngeflip) */
 .card-back {
     padding: 1.5rem;
     transform: rotateY(180deg);
@@ -598,12 +604,16 @@ nav a:hover {
     color: var(--color-oak-moss);
 }
 
+
+/* Karena aku suka buka pws di tablet, jadi ngide buat di tablet experience yang ditampilkan dalam sebaris itu ada 2 --> jadi kalo scroll kayak ga jauh banget (kalo 1 baris 1 experience) */
 @media (max-width: 900px) {
     .experience-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
+
+/* ini untuk hp */
 @media (max-width: 600px) {
 
     .experience-grid {
