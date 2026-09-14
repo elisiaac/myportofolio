@@ -106,7 +106,47 @@ nav a:hover {
 }
 
 .hero {
-    padding: 7.5rem 0 5rem;
+    padding: 9rem 0 5rem;
+    position: relative;
+    background-color: var(--color-honeydew);
+    background-size: 40px 40px;
+    overflow: hidden;
+    min-height: auto;
+
+    background-image: 
+        linear-gradient(to right, rgba(101, 119, 51, 0.15) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(101, 119, 51, 0.15) 1px, transparent 1px);
+    /* Ukuran tiap kotak gridnyah */
+    background-size: 50px 50px;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 6.5rem 0 3rem 0;
+    border: 3px solid var(--color-tea-green);
+    border-width: 3px 0 3px 0;
+
+    background: radial-gradient(
+            ellipse at center,
+            rgba(223, 235, 196, 1) 0%,
+            rgba(224, 239, 198, 0.6) 45%,
+            rgba(234, 240, 220, 0) 100%
+        ),
+        linear-gradient(
+            90deg,
+            rgba(233, 234, 232, 0),
+            rgba(81, 107, 28, 0.7)
+        );
+
+    backdrop-filter: blur(0.5px);
+
+    z-index: 0;
+}
+
+.hero > * {
+    position: relative;
+    z-index: 1;
 }
 
 .hero-grid {
@@ -141,16 +181,7 @@ nav a:hover {
     font-size: clamp(3rem, 7vw, 5rem);
     line-height: 0.95;
     font-weight: 900;
-    animation: glowPulse 3s ease-in-out infinite;
-}
-
-@keyframes glowPulse {
-    0%, 100% {
-        text-shadow: 0 0 0 transparent;
-    }
-    50% {
-        text-shadow: 0 0 18px rgba(102, 131, 35, 0.75);
-    }
+    text-shadow: 2px 2px 1px var(--color-old-gold);
 }
 
 .bio {
@@ -269,6 +300,9 @@ nav a:hover {
 }
 
 @media (max-width: 600px) {
+    .hero::before {
+        inset: 7rem 0 2.5rem 0;
+    }
     .hero-grid {
         grid-template-columns: 1fr;
         grid-template-areas:
@@ -300,6 +334,7 @@ nav a:hover {
     text-align : center;
     margin-bottom: 2rem;
     animation: letterReveal 0.8s ease-out both;
+        text-shadow: 2px 2px 1px var(--color-old-gold);
 }
 
 @keyframes letterReveal {
@@ -432,6 +467,12 @@ nav a:hover {
     border: 3px solid var(--color-fern);
     border-radius: 30px;
     backdrop-filter: blur(1.5px);   
+}
+
+.photo-experience {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
 }
 
 .experience-category {
