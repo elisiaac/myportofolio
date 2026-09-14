@@ -428,9 +428,10 @@ nav a:hover {
 
 .experience-card {
     padding: 1.25rem;
-    background-color: #fff;
-    border: 1px solid var(--color-fern);
-    border-radius: var(--radius);
+    background-color: color-mix(in srgb, var(--color-tea-green) 50%, transparent);
+    border: 3px solid var(--color-fern);
+    border-radius: 30px;
+    backdrop-filter: blur(1.5px);   
 }
 
 .experience-category {
