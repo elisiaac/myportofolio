@@ -448,7 +448,7 @@ nav a:hover {
 
 .experience-section h1 {
     font-family: var(--font-heading);
-    margin: 0.4rem 0 1.5rem;
+    margin: 0.4rem 0 5rem;
     font-size: 3rem;
     font-weight: 800;
     text-align: center;
@@ -457,43 +457,168 @@ nav a:hover {
 
 .experience-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 .experience-card {
-    padding: 1.25rem;
-    background-color: color-mix(in srgb, var(--color-tea-green) 50%, transparent);
-    border: 3px solid var(--color-fern);
-    border-radius: 30px;
-    backdrop-filter: blur(1.5px);   
+    height: 380px;
+    perspective: 1000px;
+    flex: 0 0 250px;
 }
 
-.photo-experience {
-    width: 120px;
-    height: 120px;
-    object-fit: contain;
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.7s ease;
+    transform-style: preserve-3d;
+}
+
+.experience-card:hover .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    border: 3px solid var(--color-fern);
+    border-radius: 30px;
+    background-color: color-mix(
+        in srgb,
+        var(--color-tea-green) 50%,
+        transparent
+    );
+    backdrop-filter: blur(4px);
+    backface-visibility: hidden;
+}
+
+.card-front {
+    padding: 0.8rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .experience-category {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border: 2px solid var(--color-fern);
+    border-radius: 999px;
+    background-color: var(--color-tea-green);
     color: var(--color-oak-moss);
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 800;
     text-transform: uppercase;
 }
 
-.experience-card h2 {
-    margin: 0.5rem 0;
-    font-size: 1.25rem;
+.experience-image {
+    width: 100%;
+    height: 180px;
+    margin-top: 0.6rem;
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--color-fern);
 }
 
-.experience-description,
-.empty-state {
+.experience-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.photo-experience span {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.experience-info {
+    padding: 0.8rem 0.3rem;
+}
+
+.experience-info h2 {
+    margin: 0.7rem 0 0.3rem;
+
+    font-family: var(--font-heading);
+
+    font-size: 1.2rem;
+
+    line-height: 1.15;
+}
+
+.experience-period {
+    margin: 0;
+
     color: var(--color-old-gold);
+
+    font-size: 0.7rem;
+}
+
+.experience-role {
+    margin-top: 0.5rem;
+
+    font-size: 0.75rem;
+
+    font-weight: 700;
+}
+
+.card-back {
+    padding: 1.5rem;
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-back h2 {
+    margin: 1rem 0 0.5rem;
+    font-family: var(--font-heading);
+    font-size: 1.3rem;
+    line-height: 1.2;
+}
+
+.experience-organization {
+    margin: 0 0 1rem;
+    color: var(--color-old-gold);
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.experience-description {
+    margin: 0;
+    color: var(--color-old-gold);
+    font-size: 0.78rem;
+    line-height: 1.5;
 }
 
 .experience-status {
     margin-top: 1rem;
-    font-size: 0.85rem;
-    font-weight: 600;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-oak-moss);
+}
+
+@media (max-width: 900px) {
+    .experience-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+
+    .experience-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .experience-card {
+        height: 380px;
+    }
+
 }

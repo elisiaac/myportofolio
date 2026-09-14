@@ -25,24 +25,62 @@
     <main>
         <section class="experience-section" id="experience">
             <div class="container">
-                <h1 class="section-title">My Journey so far!</h1>
-                
-                <div class="experience-slider">
+                <h1 class="section-title">My Experience</h1>
+                <div class="experience-grid">
                     {% for experience in experience_list %}
-                        <article class="experience-card">
-                            <span class="experience-category">
-                                {{ experience.get_category_display }}
-                            </span>
-                            <h2>{{ experience.title }}</h2>
-                            <p class="experience-description">
-                                {{ experience.description }}
-                            </p>
-                            {% if experience.is_ongoing %}
-                                <p class="experience-status">Sedang berlangsung</p>
-                            {% else %}
-                                <p class="experience-status">Selesai</p>
-                            {% endif %}
-                        </article>
+                    <article class="experience-card">
+                        <div class="card-inner">
+                            <!-- bagian depan yah -->
+                            <div class="card-front">
+                                <div class="experience-image">
+                                    {% if experience.thumbnail %}
+                                        <img
+                                            src="{{ experience.thumbnail.url }}"
+                                            alt="{{ experience.organization }}"
+                                        >
+                                    {% else %}
+                                        <span>Photo</span>
+                                    {% endif %}
+                                </div>
+                                <div class="experience-info">
+                                    <span class="experience-category">
+                                        {{ experience.get_category_display }}
+                                    </span>
+                                    <h2>
+                                        {{ experience.organization }}
+                                    </h2>
+                                    <p class="experience-period">
+                                    {{ experience.started_at|date:"F Y" }}
+                                    -
+                                    {% if experience.is_ongoing %}
+                                        Present
+                                    {% else %}
+                                        {{ experience.ended_at|date:"F Y" }}
+                                    {% endif %}
+                                </p>
+                                    <p class="experience-role">
+                                        {{ experience.title }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- bagian belakang yaw -->
+                            <div class="card-back">
+                                <span class="experience-category">
+                                    {{ experience.get_category_display }}
+                                </span>
+                                <h2>
+                                    {{ experience.title }}
+                                </h2>
+                                <p class="experience-organization">
+                                    {{ experience.organization }}
+                                </p>
+                                <p class="experience-description">
+                                    {{ experience.description }}
+                                </p>
+                            </div>
+                        </div>
+                    </article>
                     {% empty %}
                         <p class="empty-state">
                             Belum ada pengalaman yang ditambahkan.
