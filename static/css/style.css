@@ -545,27 +545,20 @@ nav a:hover {
 
 .experience-info h2 {
     margin: 0.7rem 0 0.3rem;
-
     font-family: var(--font-heading);
-
     font-size: 1.2rem;
-
     line-height: 1.15;
 }
 
 .experience-period {
     margin: 0;
-
     color: var(--color-old-gold);
-
     font-size: 0.7rem;
 }
 
 .experience-role {
     margin-top: 0.5rem;
-
     font-size: 0.75rem;
-
     font-weight: 700;
 }
 

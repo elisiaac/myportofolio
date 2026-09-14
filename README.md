@@ -28,3 +28,25 @@ Mana yang lebih baik digunakan untuk membuat website, pengukuran dengan px atau 
 (sejauh ini hanya itu).
 
 Karena pemecahan masalah yang saya lakukan juga lebih banyak dilakukan dengan trial dan error, kalau sudah buntu saya mencoba cari informasi dari youtube, di sana ada banyak sekali penjelasan mengenai alur pembuatan website dan juga bagaimana styling menggunakan css. Selain itu karena keterbatasan ingatan saya juga dengan hal-hal ini, saya menggunakan referensi website lama saya sebagai acuan kode dan styling css untuk belajar. Misalnya ada tombol a --> saya cek file css untuk melihat bagaimana dulu saya menstyling button tersebut, kenapa outputnya bisa begitu? --> lalu saya coba aplikasikan "styling" lain dengan trial pada code proto saya yang sekarang dan jadilah seperti yang ada saat ini YIPPIE!
+
+
+
+<!-- TUGAS 2 -->
+1. Alur pemrosesannya dimulai saat pengguna mengetikkan alamat URL halaman portofolionya di browser yang mengirimkan sebuah HTTP GET Request ke server web Django (di sini soalnya pake django). Berkas urls.py proyek berperilaku sebagai gerbang utama yang memeriksa pola awalan URL yang diketik, lalu meneruskan rutenya ke urls.py aplikasi menggunakan fungsi include(). Lalu berkas routing masuk ke jalur URL yang lebih spesifik ke fungsi pemroses tertentu di dalam view. View merespons dengan memanggil model untuk mengambil data portofolio dari database menggunakan Django. Model memproses data dan mengembalikan data dalam bentuk objek Python ke view. Selanjutnya, view 'memasukkan' data tersebut ke dalam berkas template HTML, lalu di render. Hasil akhir berupa dokumen HTML lengkap yang sudah ada informasi dan designnya.
+
+2. Menurut saya, ketika data-data portofolio di tuliskan secara hardcoded dalam template akan menyulitkan pemeliharaan dan pengembangan. Di mana dari keterbatasan yang dirasakan pada tugas 1, untuk memperbarui data, menambahkan atau menghapus data menjadi sulit karena perlu membuka file dan mengubahnya satu persatu. Selain itu setelah selesai diganti, admin masih perlu deploy ulang. Dengan menyimpan data pada model, manipulasi data menjadi lebih mudah. Selain itu yang saya rasakan saat mencoba di Tugas 2 ini, pengelolaannya lebih mudah dan terstruktur. Sekali menambahkan data langsung muncul dan rapih.
+
+3. Yang saya pahami, makemigration dan migrate itu saling melengkapi dalam mensinkronkan kode ke database. Untuk yang makemigration digunakan untuk memeriksa perubahan-perubahan yang terjadi pada modelnya dan akan disimpan sebagai suatu berkas migrasi (contoh di saya : 0001_initial.py) yang ada di folder migrations. Perubahan databasenya akan terjadi saat menjalankan code migrate. Contohnya pada kasus model Experience saya, saya wajib menjalankan kedua perintah tersebut secara berurutan: pertama makemigrations untuk membuat instruksi pembuatan tabel pengalaman beserta field pendukungnya, kemudian migrate agar tabel tersebut benar-benar terbentuk di dalam database sehingga fitur CRUD siap menyimpan dan mengelola data pengalaman pengguna.
+
+
+Untuk penggunaan AI saya gunakan dengan menanyakan:
+Apa saja opsi-opsi yang tersedia untuk memasukkan data dengan tipe image ke database. Dan AI gemini memberikan saya beberapa saran. Saya juga lanjur bertanya untuk project ini lebih baik image diletakkan pada folder static atau di internet/cloud. Saya sendiri sudah mencoba beberapa cara, tapi dari yang disarankan ada beberapa kendala, misalnya website untuk cloudnya tidak dapat merespon request pembuatan akun saya, dan beberapa kendala lainnya.
+https://share.gemini.google/ml0DZlQPIKzK
+
+Untuk hal-hal terkait css dan html lagi lagi saya pelajari dari youtube dan searching di google, beberapa diantaranya:
+https://youtu.be/dGPzLsKPafE?si=dOFPIyuEFXA2iNWK
+https://www.w3schools.com/django/django_admin.php
+https://youtu.be/OV8MVmtgmoY?si=uumihd-xd3fKKF6y
+
+
+Ada beberapa hal yang saya masih kurang paham juga saat mengerjakan ini sehingga saya bertanya kepada teman-teman saya. Terima kasiiii:3
