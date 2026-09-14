@@ -13,7 +13,7 @@ Progress Mingguan:
 Week 1 - Membuat project & setup django, melakukan integrasi ke PWS
 Week 2 - Membuat section baru "education" yang diisi dengan 5 konten foto selama menempuh pendidikan di Fasilkom & keterangan kuliah saat ini
 
-<!-- TUGAS 1 -->
+### Tugas 1
 1. Untuk semantik HTML5 yang sudah saya gunakan sejauh ini adalah section yang saat ini digunakan pada dua bagian. Ada bagian hero section yang memuat "About Me" dan section education. Menurut saya elemen tersebut membantu saya dengan memisahkan dengan jelas content yang ada dengan membungkus masing-masing bagian. Selain itu section yang saya gunakan ini sangat berguna saat navigasi dari navbar (dengan <section id="ini nama section">). Dan yang paling mudah saya rasakan adalah kemudahan pengaturan margin tiap sectionnya.
 
 Untuk elemen semantik seperti article dan aside belum saya gunakan sejauh ini.
@@ -31,7 +31,7 @@ Karena pemecahan masalah yang saya lakukan juga lebih banyak dilakukan dengan tr
 
 
 
-<!-- TUGAS 2 -->
+### Tugas 2
 1. Alur pemrosesannya dimulai saat pengguna mengetikkan alamat URL halaman portofolionya di browser yang mengirimkan sebuah HTTP GET Request ke server web Django (di sini soalnya pake django). Berkas urls.py proyek berperilaku sebagai gerbang utama yang memeriksa pola awalan URL yang diketik, lalu meneruskan rutenya ke urls.py aplikasi menggunakan fungsi include(). Lalu berkas routing masuk ke jalur URL yang lebih spesifik ke fungsi pemroses tertentu di dalam view. View merespons dengan memanggil model untuk mengambil data portofolio dari database menggunakan Django. Model memproses data dan mengembalikan data dalam bentuk objek Python ke view. Selanjutnya, view 'memasukkan' data tersebut ke dalam berkas template HTML, lalu di render. Hasil akhir berupa dokumen HTML lengkap yang sudah ada informasi dan designnya.
 
 2. Menurut saya, ketika data-data portofolio di tuliskan secara hardcoded dalam template akan menyulitkan pemeliharaan dan pengembangan. Di mana dari keterbatasan yang dirasakan pada tugas 1, untuk memperbarui data, menambahkan atau menghapus data menjadi sulit karena perlu membuka file dan mengubahnya satu persatu. Selain itu setelah selesai diganti, admin masih perlu deploy ulang. Dengan menyimpan data pada model, manipulasi data menjadi lebih mudah. Selain itu yang saya rasakan saat mencoba di Tugas 2 ini, pengelolaannya lebih mudah dan terstruktur. Sekali menambahkan data langsung muncul dan rapih.
