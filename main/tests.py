@@ -4,13 +4,17 @@ from django.utils import timezone
 
 from main.models import Experience
 
+# "Pada tugas sebelumnya, modul kustom yang saya implementasikan adalah Education. Oleh karena itu, pada tugas 2 kali ini modul baru yang saya tambahkan untuk memenuhi spesifikasi bagian portofolio adalah Experience. -> jadi buat testnya kurang lebih sama dengan yang ada di tutorial 2 kak. Tapi ada beberapa yang aku sesuaiin lagi sesuai dengan templatenyaa"
+
 
 class MainTest(TestCase):
     def setUp(self):
         self.experience = Experience.objects.create(
             title="Asisten Dosen PBP",
+            organization="Fasilkom UI",
             description="Membantu mahasiswa memahami pengembangan web.",
             category="part-time",
+            started_at=timezone.now(),
         )
 
     def test_main_url_is_accessible(self):
@@ -39,8 +43,9 @@ class MainTest(TestCase):
         self.assertContains(response, self.experience.title)
         self.assertContains(response, self.experience.description)
         self.assertContains(response, "Part-Time")
-        self.assertContains(response, "Sedang berlangsung")
-        self.assertContains(response, f'href="{reverse("main:show_main")}"')
+        self.assertContains(response, "Present")
+        self.assertContains(response, 'href="/#profile"')
+        # ini diganti jadi ada profilenya kerena navbar mengarahkan kembali ke section tertentu -> profile
 
     def test_empty_experience_page(self):
         Experience.objects.all().delete()
@@ -54,5 +59,5 @@ class MainTest(TestCase):
         response = self.client.get(reverse("main:show_experience"))
 
         self.assertFalse(self.experience.is_ongoing)
-        self.assertContains(response, "Selesai")
-        self.assertNotContains(response, "Sedang berlangsung")
+        # Saat sudah selesai, kata "Present" gak muncul lagi yeahhh
+        self.assertNotContains(response, "Present")

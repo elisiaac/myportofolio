@@ -15,7 +15,8 @@
     <header class="site-header">
         <div class="container">
             <nav>
-                <a href="{% url 'main:show_main' %}#profile">Profile</a>
+                <!-- Biar kalau pencet navbar profile bisa balik ke profilenya smooth gitu -->
+                <a href="{% url 'main:show_main' %}#profile">Profile</a> 
                 <a href="#education">Education</a> <!-- ini kalau navigasi ke dalam satu page yang sama-->
                 <a href="{% url 'main:show_experience' %}">Experience</a>
             </nav>
