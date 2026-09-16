@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Monda:wght@400..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+    {% block meta %} {% endblock meta %}
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <nav>
+                <!-- Biar kalau pencet navbar profile bisa balik ke profilenya smooth gitu -->
+                <a href="{% url 'main:show_main' %}#profile">Profile</a> 
+                <a href="#education">Education</a> <!-- ini kalau navigasi ke dalam satu page yang sama-->
+                <a href="{% url 'main:show_experience' %}">Experience</a>
+            </nav>
+        </div>
+    </header>
+    {% block content %} {% endblock content %}
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2026 {{ name }}. Fakultas Ilmu Komputer, Universitas Indonesia.</p>
+        </div>
+    </footer>
+</body>
+</html>
