@@ -1,4 +1,4 @@
-from django.forms import ModelForm, TextInput, Textarea, DateInput, Select, FileInput
+from django.forms import ModelForm, TextInput, Textarea, DateInput, Select, FileInput, URLInput
 
 from main.models import Experience
 # Mau nambah page project untuk Tugas 3
@@ -47,7 +47,7 @@ class ExperienceForm(ModelForm):
         }
 
 # untuk project
-class ProjectForm(forms.ModelForm): # fungsinya buat memetakan field-field dari main/models.py
+class ProjectForm(ModelForm): # fungsinya buat memetakan field-field dari main/models.py
     class Meta:
         model = Project
         fields = [
@@ -63,4 +63,16 @@ class ProjectForm(forms.ModelForm): # fungsinya buat memetakan field-field dari 
             "category": "Category",
             "thumbnail": "Thumbnail Image",
             "project_url": "Project URL",
+        }
+        widgets = {
+            "title": TextInput(attrs={
+                "placeholder": "Contoh: Portofolio Web App",
+            }),
+            "description": Textarea(attrs={
+                "placeholder": "Contoh: Aplikasi portofolio pribadi berbasis Django...",
+                "rows": 4,
+            }),
+            "project_url": URLInput(attrs={
+                "placeholder": "wajib dengan format https://",
+            }),
         }

@@ -1,0 +1,44 @@
+<!-- Modal ini sengaja memanfaatkan styling class .experience-delete-modal untuk menjaga konsistensi UI/UX popover dialog di seluruh portofolio. Semua target ID popover, form action, method, dan token parameter telah diubah khusus untuk proses penghapusan data Project -->
+
+<button type="button"
+        class="button button-danger"
+        popovertarget="delete-project-{{ project.id }}"
+        aria-label="Delete {{ project.title }}"
+        title="Delete project">
+    Delete
+</button>
+
+<div id="delete-project-{{ project.id }}"
+     class="experience-delete-modal"
+     popover="auto"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="delete-project-title-{{ project.id }}">
+    <button type="button"
+            class="experience-delete-modal__backdrop"
+            popovertarget="delete-project-{{ project.id }}"
+            popovertargetaction="hide"
+            aria-label="Close delete confirmation"></button>
+    <div class="experience-delete-modal__content">
+        <button type="button"
+                class="experience-delete-modal__close"
+                popovertarget="delete-project-{{ project.id }}"
+                popovertargetaction="hide"
+                aria-label="Close delete confirmation">×</button>
+        <h2 id="delete-project-title-{{ project.id }}">Delete Project?</h2>
+        <p>
+            Are you sure you want to delete
+            <strong>{{ project.title }}</strong>?
+        </p>
+        <div class="experience-delete-modal__actions">
+            <button type="button"
+                    class="button button-secondary"
+                    popovertarget="delete-project-{{ project.id }}"
+                    popovertargetaction="hide">Cancel</button>
+            <form method="post" action="{% url 'main:delete_project' project.id %}">
+                {% csrf_token %}
+                <button type="submit" class="button button-danger">Yes, Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
