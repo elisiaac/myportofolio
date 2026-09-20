@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Menambahkan favicon untuk di tab browser -->
+    <link rel="icon" type="image/png" href="/static/img/icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Monda:wght@400..700&display=swap" rel="stylesheet">
@@ -17,7 +19,7 @@
             <nav>
                 <!-- Biar kalau pencet navbar profile bisa balik ke profilenya smooth gitu -->
                 <a href="{% url 'main:show_main' %}#profile">Profile</a> 
-                <a href="#education">Education</a> <!-- ini kalau navigasi ke dalam satu page yang sama-->
+                <a href="{% url 'main:show_main' %}#education">Education</a>
                 <a href="{% url 'main:show_experience' %}">Experience</a>
             </nav>
         </div>
