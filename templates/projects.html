@@ -50,28 +50,25 @@
                                     <p class="experience-description">
                                         {{ project.description }}
                                     </p>
-                                    {% if project.project_url %}
-                                        <p class="experience-role">
-                                            <a href="{{ project.project_url }}" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">
-                                                Live Project &rarr;
-                                            </a>
-                                        </p>
-                                    {% endif %}
                                 </div>
                             </div>
 
                             <!-- bagian belakang (kartu saat di-hover/flip untuk aksi Edit & Delete) -->
                             <div class="card-back">
-                                <span class="experience-category">
-                                    {{ project.get_category_display }}
-                                </span>
                                 <h2>
                                     {{ project.title }}
                                 </h2>
                                 <p class="experience-description">
                                     {{ project.description }}
                                 </p>
-
+                                {% if project.project_url %}
+                                    <a href="{{ project.project_url }}" 
+                                    target="_blank" 
+                                    rel="noopener noreferrer" 
+                                    class="project-link">
+                                        Project Link &rarr;
+                                    </a>
+                                {% endif %}
                                 <div class="card-actions">
                                     <a href="{% url 'main:edit_project' project.id %}" class="button button-edit">
                                         Edit
