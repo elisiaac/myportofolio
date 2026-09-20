@@ -900,9 +900,21 @@ nav a:hover {
 /* Tambahan css untuk yang project --> sisanya di samain kayak yg experience */
 .project-link {
     display: inline-block;
-    color: var(--color-oak-moss, #2e4a3d);
+    text-align: center;
+    color: var(--color-oak-moss);
+    background-color: var(--color-honeydew);
+    border: 2px solid var(--color-oak-moss);
+    border-radius: 2rem;
     font-size: 0.85rem;
-    font-weight: 600;
-    text-decoration: underline;
-    margin-bottom: 0.75rem;
+    font-weight: 800;
+    padding: 0.4rem 1rem; /* Tambahkan padding biar berbentuk kapsul */
+    text-decoration: none; /* Hilangkan underline bawaan link */
+    margin: 0.75rem 0.5rem 0.75rem 0.5rem;
+    transition: all 0.2s ease-in-out;
+}
+
+.project-link:hover {
+    background-color: var(--color-old-gold);
+    color: var(--color-soft-cream);
+    border: 2px solid var(--color-honeydew);
 }
