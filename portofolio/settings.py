@@ -156,4 +156,4 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # gunakan https:// untuk trailing urlnya
-CSRF_TRUSTED_ORIGINS = ["https://elisia-catherine-myportofolio.pws.cs.ui.ac.id/"]
+CSRF_TRUSTED_ORIGINS = ["https://elisia-catherine-myportofolio.pws.cs.ui.ac.id"]
