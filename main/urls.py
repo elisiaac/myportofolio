@@ -20,6 +20,11 @@ urlpatterns = [
     path("experience/<uuid:experience_id>/delete/", delete_experience, name="delete_experience"),
     path("experience/<uuid:experience_id>/edit/", edit_experience, name="edit_experience"),
     path("api/experiences/", get_experiences_json, name="get_experiences_json"),
+    path("projects/", show_projects, name="show_projects"),
+    path("projects/add/", create_project, name="create_project"),
+    path("projects/<uuid:id>/edit/", edit_project, name="edit_project"),
+    path("projects/<uuid:id>/delete/", delete_project, name="delete_project"),
+    path("api/projects/", get_projects_json, name="get_projects_json"),
 ]
 
 if settings.DEBUG:

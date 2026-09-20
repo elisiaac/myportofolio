@@ -1,7 +1,10 @@
 from django.forms import ModelForm, TextInput, Textarea, DateInput, Select, FileInput
 
 from main.models import Experience
+# Mau nambah page project untuk Tugas 3
+from main.models import Project 
 
+# Untuk experience
 class ExperienceForm(ModelForm):
     class Meta:
         model = Experience
@@ -41,4 +44,23 @@ class ExperienceForm(ModelForm):
                 attrs={"type": "date"}
             ),
             "ended_at": DateInput(attrs={'type': 'date'})
+        }
+
+# untuk project
+class ProjectForm(forms.ModelForm): # fungsinya buat memetakan field-field dari main/models.py
+    class Meta:
+        model = Project
+        fields = [
+            "title",
+            "description",
+            "category",
+            "thumbnail",
+            "project_url",
+        ]
+        labels = {
+            "title": "Project Title",
+            "description": "Description",
+            "category": "Category",
+            "thumbnail": "Thumbnail Image",
+            "project_url": "Project URL",
         }
