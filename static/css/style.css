@@ -641,6 +641,7 @@ nav a:hover {
 }
 
 /* ini buat tampilan dari form nambah experience yaa */
+/* Dan dipake juga untuk project -> di extend designnya dari sinii (tampilannya disamain aja) */
 .project-form {
     width: 100%;
     max-width: 100%;
@@ -894,4 +895,14 @@ nav a:hover {
         width: 100%;
         text-align: center;
     }
+}
+
+/* Tambahan css untuk yang project --> sisanya di samain kayak yg experience */
+.project-link {
+    display: inline-block;
+    color: var(--color-oak-moss, #2e4a3d);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: underline;
+    margin-bottom: 0.75rem;
 }

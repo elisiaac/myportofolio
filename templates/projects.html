@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+    <title>Projects - {{ name }}</title>
+{% endblock meta %}
+{% block content %}
+    <main>
+        <section class="experience-section" id="projects">
+            <div class="container">
+                <!-- Wrapper Header -->
+                <div class="experience-header">
+                    <h1 class="section-title">My Projects</h1>
+                    <a href="{% url 'main:create_project' %}" class="button experience-add-button">
+                        <span aria-hidden="true">+</span>
+                        Add Project
+                    </a>
+                </div>
+
+                <!-- Form Search -->
+                <form method="get" action="{% url 'main:show_projects' %}" class="experience-search">
+                    <input type="search"
+                           name="title"
+                           value="{{ title_query }}"
+                           placeholder="Search by title or description..."
+                           class="experience-search__input"
+                           aria-label="Search projects">
+                    <button type="submit" class="button">Search</button>
+                </form>
+
+                <!-- Grid Kartu Bolak-balik (Flip) -->
+                <div class="experience-grid">
+                    {% for project in project_list %}
+                    <article class="experience-card">
+                        <div class="card-inner">
+                            <!-- bagian depan (ada foto, kategori, judul, deskripsi, dan link) -->
+                            <div class="card-front">
+                                <div class="experience-image">
+                                    {% if project.thumbnail %}
+                                        <img src="{{ project.thumbnail.url }}" alt="{{ project.title }}">
+                                    {% else %}
+                                        <span>Photo</span>
+                                    {% endif %}
+                                </div>
+                                <div class="experience-info">
+                                    <span class="experience-category">
+                                        {{ project.get_category_display }}
+                                    </span>
+                                    <h2>{{ project.title }}</h2>
+                                    <!-- Deskripsi di depan memakai class asli CSS experience -->
+                                    <p class="experience-description">
+                                        {{ project.description }}
+                                    </p>
+                                    {% if project.project_url %}
+                                        <p class="experience-role">
+                                            <a href="{{ project.project_url }}" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">
+                                                Live Project &rarr;
+                                            </a>
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <!-- bagian belakang (kartu saat di-hover/flip untuk aksi Edit & Delete) -->
+                            <div class="card-back">
+                                <span class="experience-category">
+                                    {{ project.get_category_display }}
+                                </span>
+                                <h2>
+                                    {{ project.title }}
+                                </h2>
+                                <p class="experience-description">
+                                    {{ project.description }}
+                                </p>
+
+                                <div class="card-actions">
+                                    <a href="{% url 'main:edit_project' project.id %}" class="button button-edit">
+                                        Edit
+                                    </a>
+                                    {% include "components/project_delete_modal.html" with project=project %}
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    {% empty %}
+                        <p class="empty-state">Belum ada project yang ditambahkan.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock content %}

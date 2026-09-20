@@ -1,11 +1,16 @@
-from django.shortcuts import render
-from main.models import Experience
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.core import serializers
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, redirect
-from main.forms import ExperienceForm
 from django.db.models import Q
+# experience
+from main.models import Experience
+from main.forms import ExperienceForm
+
+# project
+from main.models import Project
+from main.forms import ProjectForm
+
 
 
 def show_main(request):
@@ -93,3 +98,66 @@ def delete_experience(request, experience_id):
         messages.success(request, "Pengalaman berhasil dihapus!")
         return redirect("main:show_experience")
     return redirect("main:show_experience")
+
+# Kode untuk project
+
+# API Data Delivery dalam bentuk JSON
+def get_projects_json(request):
+    title_query = request.GET.get("title", "").strip()
+    projects = Project.objects.all()
+    if title_query:
+        projects = projects.filter(
+            Q(title__icontains=title_query) | Q(description__icontains=title_query)
+        )
+    projects_json = serializers.serialize("json", projects)
+    return HttpResponse(projects_json, content_type="application/json")
+
+# menampilkan datanya di halaman project (ini deserialisasi)
+def show_projects(request):
+    json_response = get_projects_json(request)
+    projects = serializers.deserialize("json", json_response.content.decode("utf-8"))
+    projects = [item.object for item in projects]
+
+    title_query = request.GET.get("title", "").strip()
+    context = {
+        "name": "Elisia Catherine",
+        "project_list": projects,
+        "title_query": title_query,
+    }
+    return render(request, "projects.html", context)
+
+# menambahkan data project
+def create_project(request):
+    form = ProjectForm(request.POST or None, request.FILES or None)
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return redirect("main:show_projects")
+
+    context = {
+        "form": form,
+        "name": "Elisia Catherine",
+        "project": None,
+    }
+    return render(request, "project_form.html", context)
+
+# mengedit data project yang sudah ada
+def edit_project(request, id):
+    project = get_object_or_404(Project, pk=id)
+    form = ProjectForm(request.POST or None, request.FILES or None, instance=project)
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        return redirect("main:show_projects")
+
+    context = {
+        "form": form,
+        "name": "Elisia Catherine",
+        "project": project,
+    }
+    return render(request, "project_form.html", context)
+
+# untuk hapus data project
+def delete_project(request, id):
+    if request.method == "POST":
+        project = get_object_or_404(Project, pk=id)
+        project.delete()
+    return redirect("main:show_projects")
