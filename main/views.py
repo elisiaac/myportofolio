@@ -5,6 +5,7 @@ from django.core import serializers
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from main.forms import ExperienceForm
+from django.db.models import Q
 
 
 def show_main(request):
@@ -19,15 +20,40 @@ def show_main(request):
     }
     return render(request, "index.html", context)
 
+# API Data Delivery dalam bentuk JSON
+def get_experiences_json(request):
+    title_query = request.GET.get("title", "").strip()
+    experiences = Experience.objects.all()
 
+    # ini buat filternya berdasarkan nama organisasi ATAU title/role
+    if title_query:
+        experiences = experiences.filter(
+            Q(organization__icontains=title_query) | Q(title__icontains=title_query)
+        )
+
+    experiences_json = serializers.serialize("json", experiences)
+    return HttpResponse(experiences_json, content_type="application/json")
+
+# Menampilkan datanya
 def show_experience(request):
+    # Mengambil respons JSON dari endpoint
+    json_response = get_experiences_json(request)
+    
+    # Bongkar JSON dan ubah balik jadi objek Python
+    experiences = serializers.deserialize("json", json_response.content.decode("utf-8"))
+    # Ambil data aslinya supaya bisa dibaca di template HTML
+    experiences = [exp.object for exp in experiences]
+
+    title_query = request.GET.get("title", "").strip()
+
     context = {
         "name": "Elisia Catherine",
-        "experience_list": Experience.objects.all(),
+        "experience_list": experiences,
+        "title_query": title_query,
     }
     return render(request, "experience.html", context)
 
-
+# Untuk tambah data pengalaman
 def create_experience(request):
     form = ExperienceForm(request.POST or None, request.FILES or None)
 
@@ -42,6 +68,24 @@ def create_experience(request):
     }
     return render(request, "experience_form.html", context)
 
+# Update atau edit experiencenya
+def edit_experience(request, experience_id):
+    experience = get_object_or_404(Experience, pk=experience_id)
+    form = ExperienceForm(request.POST or None, request.FILES or None, instance=experience)
+
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Pengalaman berhasil diperbarui!")
+        return redirect("main:show_experience")
+
+    context = {
+        "name": "Elisia Catherine",
+        "form": form,
+        "experience": experience,
+    }
+    return render(request, "experience_form.html", context)
+
+# Menghapus data experience
 def delete_experience(request, experience_id):
     experience = get_object_or_404(Experience, pk=experience_id)
     if request.method == "POST":

@@ -48,11 +48,16 @@ Untuk menjalankan proyek ini secara lokal, ikuti instruksi berikut:
 
 
 ## Progress Mingguan:
-Week 1 - Membuat project & setup django, melakukan integrasi ke PWS
-Week 2 - Membuat section baru "education" yang diisi dengan 5 konten foto selama menempuh pendidikan di Fasilkom & keterangan kuliah saat ini
-Week 3 - Membuat page experience yang diisi dengan 4 pengalaman
+### Week 1
+Membuat project & setup django, melakukan integrasi ke PWS
+### Week 2
+Membuat section baru "education" yang diisi dengan 5 konten foto selama menempuh pendidikan di Fasilkom & keterangan kuliah saat ini
+### Week 3
+Membuat page experience yang diisi dengan 4 pengalaman
+### Week 4
+Saya mengimplementasikan  CRUD dan penyajian data JSON pada modul Experience dengan merefaktor template agar mewarisi base.html. Halaman create dan update data menggunakan satu berkas template yang sama (experience_form.html), di mana judul halaman dan tombol besifat dinamis dengan adanya logika percabangan {% if experience %}.
 
-
+## Pertanyaan Reflektif
 ### Tugas 1
 1. Untuk semantik HTML5 yang sudah saya gunakan sejauh ini adalah section yang saat ini digunakan pada dua bagian. Ada bagian hero section yang memuat "About Me" dan section education. Menurut saya elemen tersebut membantu saya dengan memisahkan dengan jelas content yang ada dengan membungkus masing-masing bagian. Selain itu section yang saya gunakan ini sangat berguna saat navigasi dari navbar (dengan <section id="ini nama section">). Dan yang paling mudah saya rasakan adalah kemudahan pengaturan margin tiap sectionnya.
 
