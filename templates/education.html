@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+    <title>Education - {{ name }}</title>
+{% endblock meta %}
+{% block content %}
+<section class="education-section">
+    <div class="section-header">
+        <h1 class="section-title">My Education</h1>
+        <a href="{% url 'main:create_education' %}" class="btn-add">
+            + Tambah Education
+        </a>
+    </div>
+    <!-- Form search bar-->
+    <form method="get" action="{% url 'main:show_education' %}" class="experience-search">
+        <input type="search"
+                name="title"
+                value="{{ title_query }}"
+                placeholder="Search by institution or degree..."
+                class="experience-search__input"
+                aria-label="Search education">
+        <button type="submit" class="button">Search</button>
+    </form>
+
+    <div class="education-list">
+        {% for edu in education_list %}
+            <div class="education-card">
+
+                <div class="education-logo">
+                    {% if edu.logo %}
+                        <img src="{{ edu.logo.url }}" alt="{{ edu.institution }}">
+                    {% else %}
+                        <span>🎓</span>
+                    {% endif %}
+                </div>
+
+                <div class="education-info">
+                    <h2>{{ edu.institution }}</h2>
+                    <p class="degree">{{ edu.degree }}</p>
+
+                    <p class="education-period">
+                        {{ edu.started_at|date:"Y" }} –
+                        {% if edu.ended_at %}
+                            {{ edu.ended_at|date:"Y" }}
+                        {% else %}
+                            Present
+                        {% endif %}
+                    </p>
+            </div>
+            <div class="education-actions">
+                        <a href="{% url 'main:edit_education' edu.id %}" class="btn-edit">
+                            Edit
+                        </a>
+
+                        <form method="POST" action="{% url 'main:delete_education' edu.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-delete">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+        {% empty %}
+            <p>Belum ada riwayat pendidikan yang ditambahkan.</p>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock content %}

@@ -1,6 +1,22 @@
 import uuid
 from django.db import models
 
+class Education(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    institution = models.CharField(max_length=255)
+    degree = models.CharField(max_length=255)
+    started_at = models.DateField()
+    ended_at = models.DateField(blank=True, null=True)
+    logo = models.ImageField(upload_to='education_logos/', blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.degree} at {self.institution}"
+
+    @property
+    def is_ongoing(self):
+        return self.ended_at is None
+
+    
 class Experience(models.Model):
     EXPERIENCE_CHOICES = [
         ('internship', 'Internship'),

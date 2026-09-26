@@ -14,6 +14,13 @@ from main.views import (
     edit_project,
     delete_project,
     get_projects_json,
+    # education
+    show_education,
+    create_education,
+    edit_education,
+    delete_education,
+    get_educations_json,
+    
 )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -34,6 +41,13 @@ urlpatterns = [
     path("projects/<uuid:id>/edit/", edit_project, name="edit_project"),
     path("projects/<uuid:id>/delete/", delete_project, name="delete_project"),
     path("api/projects/", get_projects_json, name="get_projects_json"),
+
+    # URL Education
+    path("education/", show_education, name="show_education"),
+    path("education/add/", create_education, name="create_education"),
+    path("education/<uuid:id>/edit/", edit_education, name="edit_education"),
+    path("education/<uuid:id>/delete/", delete_education, name="delete_education"),
+    path("api/educations/", get_educations_json, name="get_educations_json"),
 ]
 
 if settings.DEBUG:

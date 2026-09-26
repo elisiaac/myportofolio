@@ -370,120 +370,7 @@ nav a:hover {
     }
 }
 
-/* Bagian Education */
-.section-title {
-    font-family: var(--font-heading);
-    font-size: 3rem;
-    text-align : center;
-    margin-bottom: 2rem;
-    animation: letterReveal 0.8s ease-out both;
-        text-shadow: 2px 2px 1px var(--color-old-gold);
-}
-
-@keyframes letterReveal {
-    from {
-        opacity: 0;
-        letter-spacing: -0.08em;
-    }
-    to {
-        opacity: 1;
-        letter-spacing: normal;
-    }
-}
-
-.education-card {
-    max-width: 920px;
-    margin: 0 auto;
-    padding: 2.5rem 1.5rem;
-    background: var(--color-oak-moss);
-    border-radius: 10px;
-    border: 7px solid var(--color-rich-mahogany);
-    box-shadow: 0 8px 30px #03290f0a;
-    text-align: center;
-}
-
-.edu-gallery {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1.25rem;
-    margin-bottom: 2rem;
-}
-
-.photo-item {
-    width: 120px;
-    height: 120px;
-    border: 0.5rem solid var(--color-soft-cream);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.photo-arung {
-    width: 170px; /* dibedakan karena memiliki panjang yang berbeda */
-}
-.photo-arung .education-img {
-    object-fit: contain;
-}
-
-.education-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-/* Bikin rotasinya satu-satu */
-.photo-item:nth-child(1) { transform: rotate(-5deg) translateY(4px); }
-.photo-item:nth-child(2) { transform: rotate(3deg) translateY(-6px); }
-.photo-item:nth-child(3) { transform: rotate(-2deg); }
-.photo-item:nth-child(4) { transform: rotate(4deg) translateY(-4px); }
-.photo-item:nth-child(5) { transform: rotate(-4deg) translateY(6px); }
-
-.photo-item:hover {
-    transform: rotate(0deg) scale(1.1);
-    box-shadow: 0 12px 30px rgba(158, 242, 113, 0.5);
-    z-index: 5;
-}
-
-.education-period {
-    display: inline-block;
-    font-size: 2rem;
-    font-weight: 800;
-    color: var(--color-honeydew);
-    margin-bottom: 0.5rem;
-}
-
-.education-degree {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--color-soft-cream);
-    margin-bottom: 1rem;
-}
-
-.education-institution {
-    font-size: 1rem;
-    margin: 0 auto;
-    padding: 0 1rem;
-    border-radius: 50px;
-    width: fit-content;
-    color: var(--color-rich-mahogany);
-    font-weight: 700;
-    background-color: var(--color-honeydew);
-}
-
-.computer {
-    color: #0f19e1;
-    font-weight: 700;
-}
-
-.science {
-    color: #e11d1d;
-    font-weight: 700;
-}
-
 /* Ini untuk bagian experience ia */
-
 .experience-section {
     margin-top: 3rem;
     padding: 4rem 0;
@@ -960,4 +847,231 @@ nav a:hover {
     background-color: var(--color-old-gold);
     color: var(--color-soft-cream);
     border: 2px solid var(--color-honeydew);
+}
+
+/* Bagian page education yang baru */
+.education-section {
+    margin-top: 3rem;
+    padding: 4rem 1.5rem 5rem;
+    max-width: 980px;
+    margin-inline: auto;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 2px dashed color-mix(in srgb, var(--color-fern) 30%, transparent);
+    padding-bottom: 1.25rem;
+}
+
+.section-header .section-title {
+    font-family: var(--font-heading);
+    font-size: 2.85rem;
+    font-weight: 900;
+    margin: 0;
+    color: var(--color-rich-mahogany);
+    text-shadow: 2px 2px 0px var(--color-old-gold);
+    animation: letterReveal 0.8s ease-out both;
+}
+
+.btn-add {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.65rem 1.4rem;
+    background: var(--color-tea-green);
+    color: var(--color-oak-moss);
+    border: 2px solid var(--color-fern);
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 12px rgba(46, 59, 28, 0.08);
+    transition: all 0.25s ease;
+}
+
+.btn-add:hover {
+    background: var(--color-fern);
+    color: var(--color-honeydew);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(46, 59, 28, 0.2);
+}
+
+.education-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.education-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem 2rem;
+    background: color-mix(in srgb, var(--color-soft-cream) 85%, var(--color-tea-green) 15%);
+    border: 1.5px solid color-mix(in srgb, var(--color-fern) 45%, transparent);
+    border-left: 6px solid var(--color-fern);
+    border-radius: 20px;
+    box-shadow: 0 4px 18px rgba(41, 17, 0, 0.04);
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+                box-shadow 0.3s ease,
+                border-left-color 0.3s ease;
+}
+
+.education-card:hover {
+    transform: translateY(-6px);
+    border-left-color: var(--color-old-gold);
+    box-shadow: 0 16px 30px rgba(46, 59, 28, 0.12),
+                0 0 0 1px color-mix(in srgb, var(--color-old-gold) 40%, transparent);
+}
+
+.education-logo {
+    width: 68px;
+    height: 68px;
+    border-radius: 18px;
+    border: 2px solid var(--color-fern);
+    background: var(--color-honeydew);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(46, 59, 28, 0.08);
+    transition: transform 0.35s ease;
+}
+
+.education-card:hover .education-logo {
+    transform: rotate(-4deg) scale(1.04);
+}
+
+.education-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 6px;
+}
+
+.education-logo span {
+    font-size: 2rem;
+}
+
+.education-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    margin: 0;
+    margin-right: auto;
+    min-width: 0;
+}
+
+.education-info h2 {
+    font-family: var(--font-heading);
+    font-size: 1.45rem;
+    font-weight: 900;
+    color: var(--color-rich-mahogany);
+    margin: 0 0 0.2rem 0;
+    line-height: 1.2;
+    text-align: left;
+}
+
+.education-info .degree {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-fern);
+    margin: 0 0 0.6rem 0;
+    text-align: left;
+}
+
+.education-info .education-period {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.95rem;
+    border: 1.5px solid var(--color-oak-moss);
+    border-radius: 999px;
+    background: var(--color-honeydew);
+    color: var(--color-rich-mahogany);
+    font-size: 0.8rem;
+    font-weight: 800;
+    margin: 0;
+    align-self: flex-start;
+}
+
+.education-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-shrink: 0;
+    margin-left: 1rem;
+}
+
+.education-actions form {
+    margin: 0;
+    display: inline-flex;
+}
+
+.btn-edit,
+.btn-delete {
+    display: inline-block;
+    padding: 0.4rem 1.15rem;
+    border-radius: 999px;
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-edit {
+    background: transparent;
+    color: var(--color-oak-moss);
+    border: 1.5px solid var(--color-fern);
+}
+
+.btn-edit:hover {
+    background: var(--color-tea-green);
+    transform: translateY(-2px);
+}
+
+.btn-delete {
+    background: transparent;
+    color: #b42318;
+    border: 1.5px solid color-mix(in srgb, #b42318 50%, transparent);
+}
+
+.btn-delete:hover {
+    background: #fee2e2;
+    border-color: #b42318;
+    transform: translateY(-2px);
+}
+
+.education-list > p {
+    text-align: center;
+    color: var(--color-oak-moss);
+    font-weight: 700;
+    padding: 3rem 0;
+}
+
+@media (max-width: 640px) {
+    .education-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.25rem;
+        padding: 1.4rem;
+    }
+
+    .education-info {
+        margin-right: 0;
+        width: 100%;
+    }
+
+    .education-actions {
+        width: 100%;
+        margin-left: 0;
+        justify-content: flex-end;
+        border-top: 1px dashed color-mix(in srgb, var(--color-fern) 25%, transparent);
+        padding-top: 0.85rem;
+    }
 }

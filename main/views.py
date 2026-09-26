@@ -3,6 +3,11 @@ from django.contrib import messages
 from django.core import serializers
 from django.http import HttpResponse
 from django.db.models import Q
+
+# education
+from main.models import Education
+from main.forms import EducationForm
+
 # experience
 from main.models import Experience
 from main.forms import ExperienceForm
@@ -11,6 +16,69 @@ from main.forms import ExperienceForm
 from main.models import Project
 from main.forms import ProjectForm
 
+def get_educations_json(request):
+    search_query = request.GET.get("title", "").strip()
+    educations = Education.objects.all().order_by("-started_at")
+    if search_query:
+        educations = educations.filter(
+            Q(institution__icontains=search_query) |
+            Q(degree__icontains=search_query)
+        )
+    educations_json = serializers.serialize("json", educations)
+    return HttpResponse(educations_json, content_type="application/json")
+
+
+def show_education(request):
+    json_response = get_educations_json(request)
+    educations = serializers.deserialize("json", json_response.content.decode("utf-8"))
+    educations = [edu.object for edu in educations]
+    title_query = request.GET.get("title", "").strip()
+
+    context = {
+        "name": "Elisia Catherine",
+        "education_list": educations,
+        "title_query": title_query,
+    }
+    return render(request, "education.html", context)
+
+# tambah edu
+def create_education(request):
+    form = EducationForm(request.POST or None, request.FILES or None)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        messages.success(request, "Pendidikan baru berhasil ditambahkan!")
+        return redirect("main:show_education") 
+    context = {
+        "form": form,
+        "name": "Elisia Catherine",
+    }
+    return render(request, "education_form.html", context)
+
+# edit education
+def edit_education(request, id):
+    education = get_object_or_404(Education, pk=id)
+    form = EducationForm(request.POST or None, request.FILES or None, instance=education)
+
+    if form.is_valid() and request.method == "POST":
+        form.save()
+        messages.success(request, "Pendidikan berhasil diperbarui!")
+        return redirect("main:show_education")
+
+    context = {
+        "form": form,
+        "name": "Elisia Catherine",
+        "education": education,
+    }
+    return render(request, "education_form.html", context)
+
+# hapus education
+def delete_education(request, id):
+    education = get_object_or_404(Education, pk=id)
+    if request.method == "POST":
+        education.delete()
+        messages.success(request, "Pendidikan berhasil dihapus!")
+    return redirect("main:show_education")
 
 
 def show_main(request):
