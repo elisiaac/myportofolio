@@ -7,9 +7,11 @@
 <section class="education-section">
     <div class="section-header">
         <h1 class="section-title">My Education</h1>
+    {% if user.is_superuser %}
         <a href="{% url 'main:create_education' %}" class="btn-add">
             + Tambah Education
         </a>
+    {% endif %}  
     </div>
     <!-- Form search bar-->
     <form method="get" action="{% url 'main:show_education' %}" class="experience-search">
@@ -47,6 +49,7 @@
                         {% endif %}
                     </p>
             </div>
+        {% if user.is_superuser %}
             <div class="education-actions">
                         <a href="{% url 'main:edit_education' edu.id %}" class="btn-edit">
                             Edit
@@ -60,6 +63,7 @@
                         </form>
                     </div>
                 </div>
+        {% endif %}
         {% empty %}
             <p>Belum ada riwayat pendidikan yang ditambahkan.</p>
         {% endfor %}

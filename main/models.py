@@ -1,6 +1,9 @@
 import uuid
 from django.db import models
 
+# tutorial 4
+from django.contrib.auth.models import User
+
 class Education(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     institution = models.CharField(max_length=255)
@@ -57,6 +60,9 @@ class Project(models.Model):
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default="web")
     thumbnail = models.ImageField (upload_to='project_thumbnails/', blank=True, null=True)
     project_url = models.URLField(blank=True, null=True)
+    starred_by = models.ManyToManyField(
+        User, related_name="starred_projects", blank=True
+    )
 
     def __str__(self):
         return self.title
