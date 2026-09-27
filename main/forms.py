@@ -1,8 +1,39 @@
 from django.forms import ModelForm, TextInput, Textarea, DateInput, Select, FileInput, URLInput
 
+from main.models import Education # revisi
 from main.models import Experience
 # Mau nambah page project untuk Tugas 3
 from main.models import Project 
+
+# untuk Education
+class EducationForm(ModelForm):
+    class Meta:
+        model = Education
+        fields = [
+            "institution",
+            "degree",
+            "started_at",
+            "ended_at",
+            "logo",
+        ]
+        labels = {
+            "institution": "Nama Institusi / Sekolah / Universitas",
+            "degree": "Gelar / Jurusan / Tingkat Pendidikan",
+            "started_at": "Waktu Mulai",
+            "ended_at": "Waktu Selesai (Kosongkan kalau masih berlangsung)",
+            "logo": "Logo Institusi",
+        }
+        widgets = {
+            "institution": TextInput(attrs={
+                "placeholder": "Contoh: Universitas Indonesia",
+            }),
+            "degree": TextInput(attrs={
+                "placeholder": "Contoh: S1 Sistem Informasi",
+            }),
+            "started_at": DateInput(attrs={"type": "date"}),
+            "ended_at": DateInput(attrs={"type": "date"}),
+            "logo": FileInput(),
+        }
 
 # Untuk experience
 class ExperienceForm(ModelForm):

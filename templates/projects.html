@@ -10,10 +10,12 @@
                 <!-- Wrapper Header -->
                 <div class="experience-header">
                     <h1 class="section-title">My Projects</h1>
+                {% if user.is_superuser %}
                     <a href="{% url 'main:create_project' %}" class="button experience-add-button">
                         <span aria-hidden="true">+</span>
                         Add Project
                     </a>
+                {% endif %}  
                 </div>
 
                 <!-- Form Search -->
@@ -80,6 +82,7 @@
                                     {% include "components/project_delete_modal.html" with project=project %}
                                 {% endif %}
                                 </div>
+                            {% endif %}  
                             </div>
                         </div>
                     </article>

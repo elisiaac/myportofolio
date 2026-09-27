@@ -16,12 +16,26 @@
 <body>
     <header class="site-header">
         <div class="container">
+            <!-- Logo di kiri saat di HP -->
+            <a href="{% url 'main:show_main' %}#profile" class="nav-brand">
+                <img src="/static/img/Navbar_logo.png" alt="Cathy" class="nav-logo">
+            </a>
+            <!-- Checkbox & icon burger -->
+            <input type="checkbox" id="menu-toggle" class="menu-toggle">
+            <label for="menu-toggle" class="burger-btn">&#9776;</label>
+
             <nav>
-                <!-- Biar kalau pencet navbar profile bisa balik ke profilenya smooth gitu -->
                 <a href="{% url 'main:show_main' %}#profile">Profile</a> 
-                <a href="{% url 'main:show_main' %}#education">Education</a>
+                <a href="{% url 'main:show_education' %}">Education</a>
                 <a href="{% url 'main:show_experience' %}">Experience</a>
                 <a href="{% url 'main:show_projects' %}">Projects</a>
+                {% if user.is_authenticated %}
+                    <span class="nav-user">{{ user.username }}</span>
+                    <a href="{% url 'main:logout' %}">Logout</a>
+                {% else %}
+                    <a href="{% url 'main:login' %}">Login</a>
+                    <a href="{% url 'main:register' %}">Register</a>
+                {% endif %}
             </nav>
         </div>
     </header>

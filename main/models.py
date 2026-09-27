@@ -1,6 +1,25 @@
 import uuid
 from django.db import models
 
+# tutorial 4 -> model User udah disediakan oleh django
+from django.contrib.auth.models import User 
+
+class Education(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    institution = models.CharField(max_length=255)
+    degree = models.CharField(max_length=255)
+    started_at = models.DateField()
+    ended_at = models.DateField(blank=True, null=True)
+    logo = models.ImageField(upload_to='education_logos/', blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.degree} at {self.institution}"
+
+    @property
+    def is_ongoing(self):
+        return self.ended_at is None
+
+    
 class Experience(models.Model):
     EXPERIENCE_CHOICES = [
         ('internship', 'Internship'),
@@ -19,6 +38,8 @@ class Experience(models.Model):
     thumbnail = models.ImageField(upload_to='experience_thumbnails/', blank=True, null=True)
     started_at = models.DateTimeField()
     ended_at = models.DateTimeField(blank=True, null=True)
+    starred_by = models.ManyToManyField(
+        User, related_name="starred_experiences", blank=True)
 
     def __str__(self):
         return self.title
@@ -41,6 +62,9 @@ class Project(models.Model):
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, default="web")
     thumbnail = models.ImageField (upload_to='project_thumbnails/', blank=True, null=True)
     project_url = models.URLField(blank=True, null=True)
+    starred_by = models.ManyToManyField(
+        User, related_name="starred_projects", blank=True
+    )
 
     def __str__(self):
         return self.title
