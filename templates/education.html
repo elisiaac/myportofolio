@@ -49,25 +49,29 @@
                         {% endif %}
                     </p>
             </div>
-        {% if user.is_superuser %}
             <div class="education-actions">
+                    {% if user.is_superuser or is_editor %}
                         <a href="{% url 'main:edit_education' edu.id %}" class="btn-edit">
                             Edit
                         </a>
-
+                    {% endif %}
+                    {% if user.is_superuser %}
                         <form method="POST" action="{% url 'main:delete_education' edu.id %}">
                             {% csrf_token %}
                             <button type="submit" class="btn-delete">
                                 Delete
                             </button>
                         </form>
+                    {% endif %}
                     </div>
                 </div>
-        {% endif %}
         {% empty %}
+        {% if title_query %}
+            Tidak ditemukan riwayat pendidikan untuk pencarian "{{ title_query }}".
+        {% else %}
             <p>Belum ada riwayat pendidikan yang ditambahkan.</p>
+        {% endif %}
         {% endfor %}
     </div>
 </section>
-
 {% endblock content %}
