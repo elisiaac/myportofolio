@@ -130,7 +130,7 @@ def get_experiences_json(request):
             Q(organization__icontains=title_query) | Q(title__icontains=title_query)
         )
 
-    experiences_json = serializers.serialize("json", experiences)
+    experiences_json = serializers.serialize("json", experiences, use_natural_foreign_keys=True)
     return HttpResponse(experiences_json, content_type="application/json")
 
 # Menampilkan datanya
@@ -149,6 +149,7 @@ def show_experience(request):
         "name": "Elisia Catherine",
         "experience_list": experiences,
         "title_query": title_query,
+        "is_editor": is_editor_or_superuser(request.user),
     }
     return render(request, "experience.html", context)
 
@@ -202,6 +203,17 @@ def delete_experience(request, experience_id):
         experience.delete()
         messages.success(request, "Pengalaman berhasil dihapus!")
         return redirect("main:show_experience")
+    return redirect("main:show_experience")
+
+# Untuk star di experience
+@login_required(login_url="/login/")
+def toggle_star_experience(request, experience_id):
+    experience = get_object_or_404(Experience, pk=experience_id)
+    if request.method == "POST":
+        if request.user in experience.starred_by.all():
+            experience.starred_by.remove(request.user)
+        else:
+            experience.starred_by.add(request.user)
     return redirect("main:show_experience")
 
 # Kode untuk project
@@ -280,7 +292,7 @@ def delete_project(request, id):
 # Tutorial 4 : star for project
 # Tanpa cek is_superuser: semua akun yang sudah login boleh memberi star
 @login_required(login_url="/login/")
-def toggle_star(request, project_id):
+def toggle_star_project(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
 
     if request.method == "POST":
