@@ -149,6 +149,7 @@ def show_experience(request):
         "name": "Elisia Catherine",
         "experience_list": experiences,
         "title_query": title_query,
+        "is_editor": is_editor_or_superuser(request.user),
     }
     return render(request, "experience.html", context)
 
