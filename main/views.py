@@ -239,6 +239,7 @@ def show_projects(request):
         "name": "Elisia Catherine",
         "project_list": projects,
         "title_query": title_query,
+        "is_editor": is_editor_or_superuser(request.user),
     }
     return render(request, "projects.html", context)
 
