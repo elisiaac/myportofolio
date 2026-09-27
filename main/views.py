@@ -24,6 +24,11 @@ from main.forms import ProjectForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
+# TUGAS 4
+# Helper untuk memeriksa apakah user bisa mengedit (Superuser atau Group Editor)
+def is_editor_or_superuser(user):
+    return user.is_authenticated and (user.is_superuser or user.groups.filter(name="Editor").exists())
+
 def show_main(request):
     last_login = request.COOKIES.get('last_login', 'Belum ada sesi login / Cookie tidak ditemukan')
     context = {
@@ -60,6 +65,7 @@ def show_education(request):
         "name": "Elisia Catherine",
         "education_list": educations,
         "title_query": title_query,
+        "is_editor": is_editor_or_superuser(request.user),
     }
     return render(request, "education.html", context)
 
@@ -83,7 +89,7 @@ def create_education(request):
 # edit education
 @login_required(login_url="/login/")
 def edit_education(request, id):
-    if not request.user.is_superuser:
+    if not is_editor_or_superuser(request.user):
         raise PermissionDenied
     
     education = get_object_or_404(Education, pk=id)
@@ -167,7 +173,7 @@ def create_experience(request):
 # Update atau edit experiencenya
 @login_required(login_url="/login/")
 def edit_experience(request, experience_id):
-    if not request.user.is_superuser:
+    if not is_editor_or_superuser(request.user):
         raise PermissionDenied
     
     experience = get_object_or_404(Experience, pk=experience_id)
@@ -244,7 +250,7 @@ def create_project(request):
 # mengedit data project yang sudah ada
 @login_required(login_url="/login/")
 def edit_project(request, id):
-    if not request.user.is_superuser:
+    if not is_editor_or_superuser(request.user):
         raise PermissionDenied
     
     project = get_object_or_404(Project, pk=id)
@@ -325,3 +331,6 @@ def logout_user(request):
     response = redirect("main:show_main")
     response.delete_cookie('last_login')
     return response
+
+
+

@@ -1,8 +1,8 @@
 import uuid
 from django.db import models
 
-# tutorial 4
-from django.contrib.auth.models import User
+# tutorial 4 -> model User udah disediakan oleh django
+from django.contrib.auth.models import User 
 
 class Education(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
