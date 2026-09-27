@@ -38,6 +38,8 @@ class Experience(models.Model):
     thumbnail = models.ImageField(upload_to='experience_thumbnails/', blank=True, null=True)
     started_at = models.DateTimeField()
     ended_at = models.DateTimeField(blank=True, null=True)
+    starred_by = models.ManyToManyField(
+        User, related_name="starred_experiences", blank=True)
 
     def __str__(self):
         return self.title

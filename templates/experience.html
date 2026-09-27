@@ -62,9 +62,7 @@
 
                             <!-- bagian belakang yaw -->
                             <div class="card-back">
-                                <span class="experience-category">
-                                    {{ experience.get_category_display }}
-                                </span>
+                                {% include "components/experience_star.html" with experience=experience %}
                                 <h2>
                                     {{ experience.title }}
                                 </h2>
