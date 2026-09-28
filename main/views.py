@@ -24,6 +24,10 @@ from main.forms import ProjectForm
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 
+# Tutorial 5
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+
 # TUGAS 4
 # Helper untuk memeriksa apakah user bisa mengedit (Superuser atau Group Editor)
 def is_editor_or_superuser(user):
@@ -218,34 +222,45 @@ def toggle_star_experience(request, experience_id):
 
 # Kode untuk project
 # API Data Delivery dalam bentuk JSON
+# Diperbatui sesuai dengan tutorial 5
 def get_projects_json(request):
     title_query = request.GET.get("title", "").strip()
-    projects = Project.objects.all()
+    filter_type = request.GET.get("filter", "")
+    projects = Project.objects.prefetch_related('starred_by').all()
+
     if title_query:
         projects = projects.filter(
             Q(title__icontains=title_query) | Q(description__icontains=title_query)
         )
-    projects_json = serializers.serialize("json", projects, use_natural_foreign_keys=True)
-    return HttpResponse(projects_json, content_type="application/json")
+    if filter_type == "starred" and request.user.is_authenticated:
+        projects = projects.filter(starred_by=request.user)
+
+    data = []
+    for project in projects:
+        starred_users = list(project.starred_by.all())
+        data.append({
+            "pk": str(project.id),
+            "fields": {
+                "title": project.title,
+                "description": project.description,
+                "category_display": project.get_category_display(),
+                "project_url": project.project_url or "",
+                "thumbnail": project.thumbnail.url if project.thumbnail else "",
+                "star_count": len(starred_users),
+                "is_starred": request.user.is_authenticated and request.user in starred_users,
+                "starred_by_names": ", ".join(u.username for u in starred_users),
+            }
+        })
+    return JsonResponse(data, safe=False)
 
 # menampilkan datanya di halaman project (ini deserialisasi)
 def show_projects(request):
-    json_response = get_projects_json(request)
-    projects = serializers.deserialize("json", json_response.content.decode("utf-8"))
-    projects = [item.object for item in projects]
-
-    # Fitur tambahan untuk tugaas 4: Filter hanya project yang dibintangi oleh user saat ini yang muncul
-    filter_type = request.GET.get("filter", "").strip()
-    if filter_type == "starred" and request.user.is_authenticated:
-        projects = [p for p in projects if request.user in p.starred_by.all()]
-
-    title_query = request.GET.get("title", "").strip()
     context = {
         "name": "Elisia Catherine",
-        "project_list": projects,
-        "title_query": title_query,
+        "title_query": request.GET.get("title", "").strip(),
+        "filter_type": request.GET.get("filter", ""),
         "is_editor": is_editor_or_superuser(request.user),
-        "filter_type" : filter_type,
+        "form": ProjectForm(),
     }
     return render(request, "projects.html", context)
 
@@ -351,5 +366,22 @@ def logout_user(request):
     response.delete_cookie('last_login')
     return response
 
+# Tutorial 5 --> Langkah 1: Membuat View create_project_ajax
+@require_POST
+def create_project_ajax(request):
+    if not request.user.is_superuser:
+        return JsonResponse(
+            {"message": "Hanya pemilik portofolio yang dapat menambahkan proyek."},
+            status=403,
+        )
 
+    form = ProjectForm(request.POST, request.FILES)
+
+    if form.is_valid():
+        project = form.save()
+        return JsonResponse(
+            {"message": "Proyek berhasil ditambahkan.", "pk": str(project.id)},
+            status=201,
+        )
+    return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
 

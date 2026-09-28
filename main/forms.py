@@ -5,6 +5,10 @@ from main.models import Experience
 # Mau nambah page project untuk Tugas 3
 from main.models import Project 
 
+# Tutorial 5
+from django.core.exceptions import ValidationError
+from django.utils.html import strip_tags
+
 # untuk Education
 class EducationForm(ModelForm):
     class Meta:
@@ -78,7 +82,7 @@ class ExperienceForm(ModelForm):
         }
 
 # untuk project
-class ProjectForm(ModelForm): # fungsinya buat memetakan field-field dari main/models.py
+class ProjectForm(ModelForm):
     class Meta:
         model = Project
         fields = [
@@ -103,7 +107,18 @@ class ProjectForm(ModelForm): # fungsinya buat memetakan field-field dari main/m
                 "placeholder": "Contoh: Aplikasi portofolio pribadi berbasis Django...",
                 "rows": 4,
             }),
+            "category": Select(attrs={"class": "form-select"}),
+            "thumbnail": FileInput(),
             "project_url": URLInput(attrs={
                 "placeholder": "wajib dengan format https://",
             }),
         }
+
+    def clean_title(self):
+        title = strip_tags(self.cleaned_data["title"]).strip()
+        if not title:
+            raise ValidationError("Nama proyek tidak boleh hanya berisi tag HTML.")
+        return title
+
+    def clean_description(self):
+        return strip_tags(self.cleaned_data["description"]).strip()

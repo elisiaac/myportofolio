@@ -25,7 +25,9 @@ from main.views import (
     # autentikasi
     register,
     login_user,
-    logout_user  
+    logout_user,
+    # ajax
+    create_project_ajax,
 )
 
 from django.conf import settings
@@ -62,6 +64,8 @@ urlpatterns = [
     path("register/", register, name="register"),
     path("login/", login_user, name="login"),
     path("logout/", logout_user, name="logout"),
+
+    path("projects/add-ajax/", create_project_ajax, name="create_project_ajax"),
 ]
 
 if settings.DEBUG:
