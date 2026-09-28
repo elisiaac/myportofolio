@@ -10,7 +10,6 @@
                 <!-- Wrapper Header -->
                 <div class="experience-header">
                     <h1 class="section-title">My Projects</h1>
-
                     {% if user.is_superuser %}
                         <a href="{% url 'main:create_project' %}" class="button experience-add-button">
                             <span aria-hidden="true">+</span>
@@ -36,7 +35,7 @@
                     </button>
                 </form>
 
-                <!-- Filter Bintang Saya -->
+                <!-- Filter bintang untuk projectnya -->
                 {% if user.is_authenticated %}
                     <div class="project-filter">
                         {% if filter_type == 'starred' %}
@@ -87,11 +86,9 @@
                                 <!-- Bagian belakang -->
                                 <div class="card-back">
                                     <h2>{{ project.title }}</h2>
-
                                     <p class="experience-description">
                                         {{ project.description }}
                                     </p>
-
                                     {% if project.project_url %}
                                         <a href="{{ project.project_url }}"
                                            target="_blank"
@@ -100,28 +97,21 @@
                                             Project Link &rarr;
                                         </a>
                                     {% endif %}
-
                                     {% include "components/project_star.html" with project=project %}
-
                                     <div class="card-actions">
-
                                         {% if user.is_superuser or is_editor %}
                                             <a href="{% url 'main:edit_project' project.id %}"
                                                class="button button-edit">
                                                 Edit
                                             </a>
                                         {% endif %}
-
                                         {% if user.is_superuser %}
                                             {% include "components/project_delete_modal.html" with project=project %}
                                         {% endif %}
-
                                     </div>
                                 </div>
-
                             </div>
                         </article>
-
                     {% empty %}
                         {% if title_query %}
                             <p>

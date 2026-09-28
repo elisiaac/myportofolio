@@ -57,7 +57,7 @@ Membuat page experience yang diisi dengan 4 pengalaman
 ### Week 4
 Saya mengimplementasikan  CRUD dan penyajian data JSON pada modul Experience dengan merefaktor template agar mewarisi base.html. Halaman create dan update data menggunakan satu berkas template yang sama (experience_form.html), di mana judul halaman dan tombol besifat dinamis dengan adanya logika percabangan {% if experience %}.
 ### Week 5
-Saya menerapkan autentikasi pengguna dan Role-Based Access Control pada 4 tingkatan peran (Anonim, Member, Editor, dan Superuser) yang diterapkan dengan proteksi ganda berupa penyembunyian kontrol di template dan dalam sisi server (redirect login serta HTTP 403 Forbidden), mengintegrasikan fitur interaktif starring berbasis ManyToManyField, menjaga keamanan endpoint serialisasi JSON menggunakan use_natural_foreign_keys=True.
+Saya menerapkan autentikasi pengguna dan Role-Based Access Control pada 4 tingkatan peran (Anonim, Member, Editor, dan Superuser) yang diterapkan dengan proteksi ganda berupa penyembunyian kontrol di template dan dalam sisi server (redirect login serta HTTP 403 Forbidden), mengintegrasikan fitur interaktif starring berbasis ManyToManyField, menjaga keamanan endpoint serialisasi JSON menggunakan use_natural_foreign_keys=True. Untuk fitur ekstra, interaktivitas, atau elemen UI/UX yang relevan di luar instruksi minggu ini saya menambahkan button filter "favorites" yang akan hanya menampilkan project-project yang sudah di bintangi oleh user tersebut.
 
 ## Pertanyaan Reflektif
 <details>
