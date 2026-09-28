@@ -56,6 +56,8 @@ Membuat section baru "education" yang diisi dengan 5 konten foto selama menempuh
 Membuat page experience yang diisi dengan 4 pengalaman
 ### Week 4
 Saya mengimplementasikan  CRUD dan penyajian data JSON pada modul Experience dengan merefaktor template agar mewarisi base.html. Halaman create dan update data menggunakan satu berkas template yang sama (experience_form.html), di mana judul halaman dan tombol besifat dinamis dengan adanya logika percabangan {% if experience %}.
+### Week 5
+Saya menerapkan autentikasi pengguna dan Role-Based Access Control pada 4 tingkatan peran (Anonim, Member, Editor, dan Superuser) yang diterapkan dengan proteksi ganda berupa penyembunyian kontrol di template dan dalam sisi server (redirect login serta HTTP 403 Forbidden), mengintegrasikan fitur interaktif starring berbasis ManyToManyField, menjaga keamanan endpoint serialisasi JSON menggunakan use_natural_foreign_keys=True.
 
 ## Pertanyaan Reflektif
 <details>
@@ -115,4 +117,13 @@ Dalam pengerjaan tugas ini, saya memanfaatkan AI untuk membantu beberapa hal tek
 Link Percakapan : https://share.gemini.google/J7uhPrOdVNWJ
 
 Selain itu pemecahan masalah juga saya lakukan dengan belajar lagi dari tutorial 3 (menurut saya di situ sangat jelas step by stepnya untuk Tugas 3) kurang lebih sama dengan yang di lab, jadi untuk detailnya tinggal saya ganti-ganti ajaa.
+</details>
+
+
+<details>
+<summary><h3>Tugas 4</h3></summary>
+
+Untuk tugas 4 ini saya hanya menggunakan sumber-sumber belajar dari website PBP, terutama tutorial 4 (https://pbp.cs.ui.ac.id/tutorial/tutorial-4.html) dan sumber dari Permify (https://permify.co/post/rbac-in-django/) --> yang membahas Implementing Role-Based Access Control in Django. Di sana membahas bagaimana cara menambahkan grup user dari admin django dan bagaimana memberikan rolenya kepada akun yang sudah pernah register atau belum.
+
+Thank youuu :3
 </details>
