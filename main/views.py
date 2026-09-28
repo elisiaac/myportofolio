@@ -234,12 +234,18 @@ def show_projects(request):
     projects = serializers.deserialize("json", json_response.content.decode("utf-8"))
     projects = [item.object for item in projects]
 
+    # Fitur tambahan untuk tugaas 4: Filter hanya project yang dibintangi oleh user saat ini yang muncul
+    filter_type = request.GET.get("filter", "").strip()
+    if filter_type == "starred" and request.user.is_authenticated:
+        projects = [p for p in projects if request.user in p.starred_by.all()]
+
     title_query = request.GET.get("title", "").strip()
     context = {
         "name": "Elisia Catherine",
         "project_list": projects,
         "title_query": title_query,
         "is_editor": is_editor_or_superuser(request.user),
+        "filter_type" : filter_type,
     }
     return render(request, "projects.html", context)
 

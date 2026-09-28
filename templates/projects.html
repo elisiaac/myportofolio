@@ -10,88 +10,127 @@
                 <!-- Wrapper Header -->
                 <div class="experience-header">
                     <h1 class="section-title">My Projects</h1>
-                {% if user.is_superuser %}
-                    <a href="{% url 'main:create_project' %}" class="button experience-add-button">
-                        <span aria-hidden="true">+</span>
-                        Add Project
-                    </a>
-                {% endif %}  
+
+                    {% if user.is_superuser %}
+                        <a href="{% url 'main:create_project' %}" class="button experience-add-button">
+                            <span aria-hidden="true">+</span>
+                            Add Project
+                        </a>
+                    {% endif %}
                 </div>
 
                 <!-- Form Search -->
-                <form method="get" action="{% url 'main:show_projects' %}" class="experience-search">
+                <form method="get"
+                      action="{% url 'main:show_projects' %}"
+                      class="experience-search">
+
                     <input type="search"
                            name="title"
                            value="{{ title_query }}"
                            placeholder="Search by title or description..."
                            class="experience-search__input"
                            aria-label="Search projects">
-                    <button type="submit" class="button">Search</button>
+
+                    <button type="submit" class="button">
+                        Search
+                    </button>
                 </form>
+
+                <!-- Filter Bintang Saya -->
+                {% if user.is_authenticated %}
+                    <div class="project-filter">
+                        {% if filter_type == 'starred' %}
+                            <a href="{% url 'main:show_projects' %}"
+                               class="button filter-button active">
+                                ★ favorites
+                            </a>
+                        {% else %}
+                            <a href="{% url 'main:show_projects' %}?filter=starred"
+                               class="button filter-button">
+                                ☆ favorites
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
 
                 <!-- Grid Kartu Bolak-balik (Flip) -->
                 <div class="experience-grid">
+
                     {% for project in project_list %}
-                    <article class="experience-card">
-                        <div class="card-inner">
-                            <!-- bagian depan (ada foto, kategori, judul, deskripsi, dan link) -->
-                            <div class="card-front">
-                                <div class="experience-image">
-                                    {% if project.thumbnail %}
-                                        <img src="{{ project.thumbnail.url }}" alt="{{ project.title }}">
-                                    {% else %}
-                                        <span>Photo</span>
-                                    {% endif %}
+                        <article class="experience-card">
+                            <div class="card-inner">
+
+                                <!-- Bagian depan -->
+                                <div class="card-front">
+                                    <div class="experience-image">
+                                        {% if project.thumbnail %}
+                                            <img src="{{ project.thumbnail.url }}"
+                                                 alt="{{ project.title }}">
+                                        {% else %}
+                                            <span>Photo</span>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="experience-info">
+                                        <span class="experience-category">
+                                            {{ project.get_category_display }}
+                                        </span>
+
+                                        <h2>{{ project.title }}</h2>
+
+                                        <p class="experience-description">
+                                            {{ project.description }}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div class="experience-info">
-                                    <span class="experience-category">
-                                        {{ project.get_category_display }}
-                                    </span>
+
+                                <!-- Bagian belakang -->
+                                <div class="card-back">
                                     <h2>{{ project.title }}</h2>
-                                    <!-- Deskripsi di depan memakai class asli CSS experience -->
+
                                     <p class="experience-description">
                                         {{ project.description }}
                                     </p>
-                                </div>
-                            </div>
 
-                            <!-- bagian belakang (kartu saat di-hover/flip untuk aksi Edit & Delete) -->
-                            <div class="card-back">
-                                <h2>
-                                    {{ project.title }}
-                                </h2>
-                                <p class="experience-description">
-                                    {{ project.description }}
-                                </p>
-                                {% if project.project_url %}
-                                    <a href="{{ project.project_url }}" 
-                                    target="_blank" 
-                                    rel="noopener noreferrer" 
-                                    class="project-link">
-                                        Project Link &rarr;
-                                    </a>
-                                {% endif %}
-                                {% include "components/project_star.html" with project=project %}
-                                <div class="card-actions">
-                                {% if user.is_superuser or is_editor %}
-                                    <a href="{% url 'main:edit_project' project.id %}" class="button button-edit">
-                                        Edit
-                                    </a>
-                                {% endif %}
-                                {% if user.is_superuser %}
-                                    {% include "components/project_delete_modal.html" with project=project %}
-                                {% endif %}
+                                    {% if project.project_url %}
+                                        <a href="{{ project.project_url }}"
+                                           target="_blank"
+                                           rel="noopener noreferrer"
+                                           class="project-link">
+                                            Project Link &rarr;
+                                        </a>
+                                    {% endif %}
+
+                                    {% include "components/project_star.html" with project=project %}
+
+                                    <div class="card-actions">
+
+                                        {% if user.is_superuser or is_editor %}
+                                            <a href="{% url 'main:edit_project' project.id %}"
+                                               class="button button-edit">
+                                                Edit
+                                            </a>
+                                        {% endif %}
+
+                                        {% if user.is_superuser %}
+                                            {% include "components/project_delete_modal.html" with project=project %}
+                                        {% endif %}
+
+                                    </div>
                                 </div>
-                            {% endif %}  
+
                             </div>
-                        </div>
-                    </article>
+                        </article>
+
                     {% empty %}
-                    {% if title_query %}
-                        Tidak ditemukan project untuk pencarian "{{ title_query }}".
-                    {% else %}
-                        <p>Belum ada project yang ditambahkan.</p>
-                    {% endif %}
+                        {% if title_query %}
+                            <p>
+                                Tidak ditemukan project untuk pencarian
+                                "{{ title_query }}".
+                            </p>
+                        {% else %}
+                            <p>Belum ada project yang ditambahkan.</p>
+                        {% endif %}
                     {% endfor %}
                 </div>
             </div>
