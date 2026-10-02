@@ -44,7 +44,7 @@
                 {% endif %}
  
                 <!-- Loading / Error / Empty state -->
-                <div id="loading" class="empty-state hide"><p>Memuat pengalaman...</p></div>
+                <div id="loading" class="empty-state hide"><p>Memuat pengalaman, tunggu yaa^^...</p></div>
                 <div id="error" class="empty-state hide"><p>Gagal memuat data pengalaman. Silakan coba lagi.</p></div>
                 <div id="empty" class="empty-state hide"><p id="empty-message">Belum ada pengalaman yang ditambahkan.</p></div>
  
@@ -112,7 +112,6 @@ const searchInput = document.getElementById('search-input');
 // modal & form hanya ada untuk superuser -> bisa null
 const experienceForm = document.getElementById('experience-form');
  
-// ---------- Helper ----------
 function escapeHtml(value) {
     return String(value ?? '')
         .replaceAll('&', '&amp;')
