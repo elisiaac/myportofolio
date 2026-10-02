@@ -123,59 +123,94 @@ def delete_education(request, id):
         messages.success(request, "Pendidikan berhasil dihapus!")
     return redirect("main:show_education")
 
-# API Data Delivery dalam bentuk JSON
+# tugas 5: endpoint JSON disusun manual dengan JsonResponse (termasuk info star)
 def get_experiences_json(request):
     title_query = request.GET.get("title", "").strip()
-    experiences = Experience.objects.all()
+    filter_type = request.GET.get("filter", "")
+    experiences = Experience.objects.prefetch_related("starred_by").order_by("-started_at")
 
-    # ini buat filternya berdasarkan nama organisasi ATAU title/role
+    # filter berdasarkan nama organisasi ATAU title/role
     if title_query:
         experiences = experiences.filter(
             Q(organization__icontains=title_query) | Q(title__icontains=title_query)
         )
+    if filter_type == "starred":
+        if request.user.is_authenticated:
+            experiences = experiences.filter(starred_by=request.user)
+        else:
+            experiences = experiences.none()
 
-    experiences_json = serializers.serialize("json", experiences, use_natural_foreign_keys=True)
-    return HttpResponse(experiences_json, content_type="application/json")
+    data = []
+    for exp in experiences:
+        starred_users = list(exp.starred_by.all())
+        data.append({
+            "pk": str(exp.id),
+            "fields": {
+                "title": exp.title,
+                "organization": exp.organization,
+                "description": exp.description,
+                "category_display": exp.get_category_display(),
+                "thumbnail": exp.thumbnail.url if exp.thumbnail else "",
+                "started_at": exp.started_at.strftime("%B %Y"),
+                "ended_at": exp.ended_at.strftime("%B %Y") if exp.ended_at else "",
+                "is_ongoing": exp.is_ongoing,
+                "star_count": len(starred_users),
+                "is_starred": request.user.is_authenticated and request.user in starred_users,
+                "starred_by_names": ", ".join(u.username for u in starred_users),
+            },
+        })
+    return JsonResponse(data, safe=False)
 
-# Menampilkan datanya
+# Halaman hanya merender kerangka; data diambil lewat fetch() di JavaScript
 def show_experience(request):
-    # Mengambil respons JSON dari endpoint
-    json_response = get_experiences_json(request)
-    
-    # Bongkar JSON dan ubah balik jadi objek Python
-    experiences = serializers.deserialize("json", json_response.content.decode("utf-8"))
-    # Ambil data aslinya supaya bisa dibaca di template HTML
-    experiences = [exp.object for exp in experiences]
-
-    title_query = request.GET.get("title", "").strip()
-
     context = {
         "name": "Elisia Catherine",
-        "experience_list": experiences,
-        "title_query": title_query,
+        "title_query": request.GET.get("title", "").strip(),
+        "filter_type": request.GET.get("filter", ""),
         "is_editor": is_editor_or_superuser(request.user),
+        "form": ExperienceForm() if request.user.is_superuser else None,
     }
     return render(request, "experience.html", context)
 
-# Untuk tambah data pengalaman
-@login_required(login_url="/login/")
-def create_experience(request):
+# tugas 5: tambah experience lewat AJAX (dipanggil dari modal)
+@require_POST
+def create_experience_ajax(request):
+    # Cek hak akses di server (belum login -> is_superuser False -> 403)
     if not request.user.is_superuser:
-        raise PermissionDenied
-    form = ExperienceForm(request.POST or None, request.FILES or None)
+        return JsonResponse(
+            {"message": "Hanya pemilik portofolio yang dapat menambahkan pengalaman."},
+            status=403,
+        )
 
-    if request.method == "POST" and form.is_valid():
-        form.save()
-        messages.success(request, "Pengalaman baru berhasil ditambahkan!")
-        return redirect("main:show_experience")
+    form = ExperienceForm(request.POST, request.FILES)
+    if form.is_valid():
+        experience = form.save()
+        return JsonResponse(
+            {"message": "Pengalaman berhasil ditambahkan.", "pk": str(experience.id)},
+            status=201,
+        )
+    return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
 
-    context = {
-        "name": "Elisia Catherine",
-        "form": form,
-    }
-    return render(request, "experience_form.html", context)
+# untuk tambah data pengalaman
+# Ini harusnya ga dipakai lagi
+# @login_required(login_url="/login/")
+# def create_experience(request):
+#     if not request.user.is_superuser:
+#         raise PermissionDenied
+#     form = ExperienceForm(request.POST or None, request.FILES or None)
 
-# Update atau edit experiencenya
+#     if request.method == "POST" and form.is_valid():
+#         form.save()
+#         messages.success(request, "Pengalaman baru berhasil ditambahkan!")
+#         return redirect("main:show_experience")
+
+#     context = {
+#         "name": "Elisia Catherine",
+#         "form": form,
+#     }
+#     return render(request, "experience_form.html", context)
+
+# update atau edit experiencenya
 @login_required(login_url="/login/")
 def edit_experience(request, experience_id):
     if not is_editor_or_superuser(request.user):
@@ -196,7 +231,7 @@ def edit_experience(request, experience_id):
     }
     return render(request, "experience_form.html", context)
 
-# Menghapus data experience
+# menghapus data experience
 @login_required(login_url="/login/")
 def delete_experience(request, experience_id):
     if not request.user.is_superuser:
@@ -209,7 +244,7 @@ def delete_experience(request, experience_id):
         return redirect("main:show_experience")
     return redirect("main:show_experience")
 
-# Untuk star di experience
+# untuk star di experience (mendukung AJAX -> JSON, fallback redirect)
 @login_required(login_url="/login/")
 def toggle_star_experience(request, experience_id):
     experience = get_object_or_404(Experience, pk=experience_id)
@@ -218,11 +253,19 @@ def toggle_star_experience(request, experience_id):
             experience.starred_by.remove(request.user)
         else:
             experience.starred_by.add(request.user)
+
+        if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            users = list(experience.starred_by.all())
+            return JsonResponse({
+                "is_starred": request.user in users,
+                "star_count": len(users),
+                "starred_by_names": ", ".join(u.username for u in users),
+            })
     return redirect("main:show_experience")
 
 # Kode untuk project
 # API Data Delivery dalam bentuk JSON
-# Diperbatui sesuai dengan tutorial 5
+# Diperbarui sesuai dengan tutorial 5
 def get_projects_json(request):
     title_query = request.GET.get("title", "").strip()
     filter_type = request.GET.get("filter", "")

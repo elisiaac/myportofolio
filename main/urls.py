@@ -4,11 +4,12 @@ from main.views import (
     show_main,
     #experience
     show_experience,
-    create_experience,
+    # create_experience, --> digantikan oleh create_experience_ajax
     edit_experience,
     delete_experience,
     get_experiences_json,
     toggle_star_experience,
+    create_experience_ajax,
     # projects
     show_projects,
     create_project,
@@ -39,7 +40,8 @@ urlpatterns = [
     # URL Experience
     path("", show_main, name="show_main"),
     path("experience/", show_experience, name="show_experience"),
-    path("experience/add/", create_experience, name="create_experience"),
+    # path("experience/add/", create_experience, name="create_experience"),
+    path("experience/add-ajax/", create_experience_ajax, name="create_experience_ajax"),
     path("experience/<uuid:experience_id>/delete/", delete_experience, name="delete_experience"),
     path("experience/<uuid:experience_id>/edit/", edit_experience, name="edit_experience"),
     path("api/experiences/", get_experiences_json, name="get_experiences_json"),

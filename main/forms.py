@@ -81,6 +81,32 @@ class ExperienceForm(ModelForm):
             "ended_at": DateInput(attrs={'type': 'date'})
         }
 
+    # Tugas 5: sanitasi input di sisi server (perlindungan XSS)
+    def clean_title(self):
+        title = strip_tags(self.cleaned_data["title"]).strip()
+        if not title:
+            raise ValidationError("Role/posisi tidak boleh kosong atau hanya berisi tag HTML.")
+        return title
+
+    def clean_organization(self):
+        organization = strip_tags(self.cleaned_data["organization"]).strip()
+        if not organization:
+            raise ValidationError("Organisasi tidak boleh kosong atau hanya berisi tag HTML.")
+        return organization
+
+    def clean_description(self):
+        description = strip_tags(self.cleaned_data["description"]).strip()
+        if not description:
+            raise ValidationError("Deskripsi tidak boleh kosong atau hanya berisi tag HTML.")
+        return description
+
+    def clean(self):
+        cleaned = super().clean()
+        started, ended = cleaned.get("started_at"), cleaned.get("ended_at")
+        if started and ended and ended < started:
+            self.add_error("ended_at", "Waktu selesai tidak boleh lebih awal dari waktu mulai.")
+        return cleaned
+
 # untuk project
 class ProjectForm(ModelForm):
     class Meta:
