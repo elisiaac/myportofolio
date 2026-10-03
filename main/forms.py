@@ -136,7 +136,7 @@ class ProjectForm(ModelForm):
             "category": Select(attrs={"class": "form-select"}),
             "thumbnail": FileInput(),
             "project_url": URLInput(attrs={
-                "placeholder": "wajib dengan format https://",
+                "placeholder": "Opsional, denagn format: https://",
             }),
         }
 
@@ -147,4 +147,7 @@ class ProjectForm(ModelForm):
         return title
 
     def clean_description(self):
-        return strip_tags(self.cleaned_data["description"]).strip()
+        description = strip_tags(self.cleaned_data["description"]).strip()
+        if not description:
+            raise ValidationError("Deskripsi tidak boleh kosong atau hanya berisi tag HTML.")
+        return description

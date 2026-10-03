@@ -62,7 +62,7 @@
 
                 <!-- Empty State -->
                 <div id="empty" class="empty-state hide">
-                    <p>Belum ada proyek yang ditambahkan atau ditemukan.</p>
+                    <p id="empty-message">Belum ada proyek yang ditambahkan.</p>
                 </div>
 
                 <!-- Project Grid -->
@@ -73,6 +73,32 @@
 
     {% if user.is_superuser %}
         {% include "components/project_form_modal.html" %}
+
+        <div id="delete-project-modal"
+             class="project-form-modal"
+             popover="auto"
+             role="dialog"
+             aria-modal="true"
+             aria-labelledby="delete-project-title">
+            <button type="button" class="project-form-modal__backdrop"
+                    popovertarget="delete-project-modal" popovertargetaction="hide"
+                    aria-label="Tutup"></button>
+            <div class="project-form-modal__content">
+                <button type="button" class="project-form-modal__close"
+                        popovertarget="delete-project-modal" popovertargetaction="hide"
+                        aria-label="Tutup">×</button>
+                <h2 id="delete-project-title">Hapus Proyek?</h2>
+                <p>Yakin ingin menghapus <strong id="delete-project-name"></strong>? Tindakan ini tidak bisa dibatalkan.</p>
+                <form id="delete-project-form" method="post" action="">
+                    {% csrf_token %}
+                    <div class="form-actions">
+                        <button type="button" class="button button-secondary"
+                                popovertarget="delete-project-modal" popovertargetaction="hide">Batal</button>
+                        <button type="submit" class="button button-danger">Hapus</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     {% endif %}
 
 <script>
@@ -86,6 +112,7 @@ let projectsAbortController;
 const loadingState = document.getElementById('loading');
 const errorState = document.getElementById('error');
 const emptyState = document.getElementById('empty');
+const emptyMessage = document.getElementById('empty-message');
 const gridContainer = document.getElementById('grid');
 const searchForm = document.getElementById('project-search-form');
 const searchInput = document.getElementById('search-input');
@@ -129,11 +156,9 @@ function buildProjectCardElement(item) {
         ? `<a href="${editUrl}" class="button button-edit">Edit</a>` : '';
 
     const deleteHtml = IS_SUPERUSER
-        ? `<form method="post" action="${deleteUrl}" style="display:inline;">
-               {% csrf_token %}
-               <button type="submit" class="button button-danger"
-                       onclick="return confirm('Yakin ingin menghapus project ini?');">Hapus</button>
-           </form>` : '';
+        ? `<button type="button" class="button button-danger btn-open-delete"
+                   data-delete-url="${esc(deleteUrl)}"
+                   data-name="${esc(p.title)}">Hapus</button>` : '';
 
     const starClass = p.is_starred ? ' is-starred' : '';
     const starText = p.is_starred ? 'Unstar' : 'Star';
@@ -190,6 +215,11 @@ async function fetchProjects(searchQuery = "") {
 
         const data = await response.json();
         if (data.length === 0) {
+            emptyMessage.textContent = searchQuery
+                ? `Tidak ditemukan proyek untuk pencarian "${searchQuery}".`
+                : (FILTER_TYPE === 'starred'
+                    ? 'Belum ada proyek yang kamu beri star.'
+                    : 'Belum ada proyek yang ditambahkan.');
             displayPageSection({ showEmpty: true });
         } else {
             gridContainer.innerHTML = '';
@@ -245,8 +275,15 @@ async function addProject(event) {
             showToast('Berhasil', 'Proyek baru berhasil ditambahkan!', 'success');
             fetchProjects(searchInput.value.trim());
         } else {
+            const FIELD_LABELS = {
+                title: 'Judul', description: 'Deskripsi', category: 'Kategori',
+                thumbnail: 'Thumbnail', project_url: 'URL proyek',
+            };
             const errorMessages = result.errors
-                ? Object.values(result.errors).flat().map(error => error.message)
+                ? Object.entries(result.errors).flatMap(([field, errs]) =>
+                    errs.map(er => field === '__all__'
+                        ? er.message
+                        : `${FIELD_LABELS[field] || field}: ${er.message}`))
                 : [result.message || `Terjadi kesalahan (status ${response.status}).`];
             showToast('Gagal menambahkan proyek', errorMessages.join(' '), 'error');
         }
@@ -276,6 +313,46 @@ searchForm.addEventListener("submit", function (event) {
     clearTimeout(searchDebounceTimer);
     searchProjects();
 });
+
+// ---------- Modal untuk hapus (satu modal dipakai bareng) ----------
+// supaya jelas kalau berhasil dihapus
+const deleteModal = document.getElementById('delete-project-modal');
+const deleteForm = document.getElementById('delete-project-form');
+const deleteName = document.getElementById('delete-project-name');
+
+if (deleteModal && deleteForm && deleteName) {
+    gridContainer.addEventListener('click', function (event) {
+        const btn = event.target.closest('.btn-open-delete');
+        if (!btn) return;
+        deleteForm.action = btn.dataset.deleteUrl;
+        deleteName.textContent = btn.dataset.name;
+        deleteModal.showPopover();
+    });
+
+    deleteForm.addEventListener('submit', async function (event) {
+        event.preventDefault();
+        const submitBtn = deleteForm.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        try {
+            const response = await fetch(deleteForm.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
+            if (!response.ok) throw new Error('Delete failed');
+            deleteModal.hidePopover();
+            showToast('Berhasil', 'Proyek berhasil dihapus!', 'success');
+            fetchProjects(searchInput.value.trim());
+        } catch (error) {
+            console.error(error);
+            showToast('Gagal menghapus', 'Proyek tidak dapat dihapus. Silakan coba lagi.', 'error');
+        } finally {
+            submitBtn.disabled = false;
+        }
+    });
+}
 
 searchProjects();
 </script>
