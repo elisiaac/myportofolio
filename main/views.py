@@ -49,46 +49,72 @@ def show_main(request):
 
 def get_educations_json(request):
     search_query = request.GET.get("title", "").strip()
-    educations = Education.objects.all().order_by("-started_at")
+    educations = Education.objects.order_by("-started_at")
     if search_query:
         educations = educations.filter(
             Q(institution__icontains=search_query) |
             Q(degree__icontains=search_query)
         )
-    educations_json = serializers.serialize("json", educations)
-    return HttpResponse(educations_json, content_type="application/json")
+
+    data = []
+    for edu in educations:
+        data.append({
+            "pk": str(edu.id),
+            "fields": {
+                "institution": edu.institution,
+                "degree": edu.degree,
+                "started_year": edu.started_at.year,
+                "ended_year": edu.ended_at.year if edu.ended_at else "",
+                "is_ongoing": edu.is_ongoing,
+                "logo": edu.logo.url if edu.logo else "",
+            },
+        })
+    return JsonResponse(data, safe=False)
 
 
 def show_education(request):
-    json_response = get_educations_json(request)
-    educations = serializers.deserialize("json", json_response.content.decode("utf-8"))
-    educations = [edu.object for edu in educations]
-    title_query = request.GET.get("title", "").strip()
-
     context = {
         "name": "Elisia Catherine",
-        "education_list": educations,
-        "title_query": title_query,
+        "title_query": request.GET.get("title", "").strip(),
         "is_editor": is_editor_or_superuser(request.user),
+        "form": EducationForm() if request.user.is_superuser else None,
     }
     return render(request, "education.html", context)
 
 # tambah edu
-@login_required(login_url="/login/")
-def create_education(request):
+# Tugas 5: tambah education lewat AJAX (dipanggil dari modal)
+@require_POST
+def create_education_ajax(request):
     if not request.user.is_superuser:
-        raise PermissionDenied
-    form = EducationForm(request.POST or None, request.FILES or None)
+        return JsonResponse(
+            {"message": "Hanya pemilik portofolio yang dapat menambahkan pendidikan."},
+            status=403,
+        )
  
-    if form.is_valid() and request.method == "POST":
-        form.save()
-        messages.success(request, "Pendidikan baru berhasil ditambahkan!")
-        return redirect("main:show_education") 
-    context = {
-        "form": form,
-        "name": "Elisia Catherine",
-    }
-    return render(request, "education_form.html", context)
+    form = EducationForm(request.POST, request.FILES)
+    if form.is_valid():
+        education = form.save()
+        return JsonResponse(
+            {"message": "Pendidikan berhasil ditambahkan.", "pk": str(education.id)},
+            status=201,
+        )
+    return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
+
+# @login_required(login_url="/login/")
+# def create_education(request):
+#     if not request.user.is_superuser:
+#         raise PermissionDenied
+#     form = EducationForm(request.POST or None, request.FILES or None)
+ 
+#     if form.is_valid() and request.method == "POST":
+#         form.save()
+#         messages.success(request, "Pendidikan baru berhasil ditambahkan!")
+#         return redirect("main:show_education") 
+#     context = {
+#         "form": form,
+#         "name": "Elisia Catherine",
+#     }
+#     return render(request, "education_form.html", context)
 
 # edit education
 @login_required(login_url="/login/")
@@ -120,6 +146,8 @@ def delete_education(request, id):
     education = get_object_or_404(Education, pk=id)
     if request.method == "POST":
         education.delete()
+        if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            return JsonResponse({"message": "Pendidikan berhasil dihapus."})
         messages.success(request, "Pendidikan berhasil dihapus!")
     return redirect("main:show_education")
 
@@ -161,7 +189,7 @@ def get_experiences_json(request):
         })
     return JsonResponse(data, safe=False)
 
-# Halaman hanya merender kerangka; data diambil lewat fetch() di JavaScript
+# Halaman hanya merender kerangka, data diambil lewat fetch() di JavaScript
 def show_experience(request):
     context = {
         "name": "Elisia Catherine",

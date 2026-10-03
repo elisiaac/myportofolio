@@ -39,6 +39,26 @@ class EducationForm(ModelForm):
             "logo": FileInput(),
         }
 
+    # Tugas 5: sanitasi input di sisi server (perlindungan XSS)
+    def clean_institution(self):
+        institution = strip_tags(self.cleaned_data["institution"]).strip()
+        if not institution:
+            raise ValidationError("Institusi tidak boleh kosong atau hanya berisi tag HTML.")
+        return institution
+
+    def clean_degree(self):
+        degree = strip_tags(self.cleaned_data["degree"]).strip()
+        if not degree:
+            raise ValidationError("Gelar/jurusan tidak boleh kosong atau hanya berisi tag HTML.")
+        return degree
+
+    def clean(self):
+        cleaned = super().clean()
+        started, ended = cleaned.get("started_at"), cleaned.get("ended_at")
+        if started and ended and ended < started:
+            self.add_error("ended_at", "Waktu selesai tidak boleh lebih awal dari waktu mulai.")
+        return cleaned
+
 # Untuk experience
 class ExperienceForm(ModelForm):
     class Meta:
@@ -136,7 +156,7 @@ class ProjectForm(ModelForm):
             "category": Select(attrs={"class": "form-select"}),
             "thumbnail": FileInput(),
             "project_url": URLInput(attrs={
-                "placeholder": "Opsional, denagn format: https://",
+                "placeholder": "Opsional, contoh: https://github.com/username/proyek",
             }),
         }
 

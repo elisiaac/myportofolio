@@ -1260,3 +1260,8 @@ nav a:hover {
         text-align: center;
     }
 }
+
+button.btn-add {
+    font-family: var(--font-body);
+    cursor: pointer;
+}
