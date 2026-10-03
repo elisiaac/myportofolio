@@ -9,7 +9,6 @@ from main.views import (
     delete_experience,
     get_experiences_json,
     toggle_star_experience,
-    create_experience_ajax,
     # projects
     show_projects,
     # create_project,
@@ -19,7 +18,7 @@ from main.views import (
     toggle_star_project,
     # education
     show_education,
-    create_education,
+    # create_education,
     edit_education,
     delete_education,
     get_educations_json,
@@ -29,6 +28,8 @@ from main.views import (
     logout_user,
     # ajax
     create_project_ajax,
+    create_experience_ajax,
+    create_education_ajax,
 )
 
 from django.conf import settings
@@ -50,6 +51,7 @@ urlpatterns = [
     # URL Projects
     path("projects/", show_projects, name="show_projects"),
     # path("projects/add/", create_project, name="create_project"),
+     path("projects/add-ajax/", create_project_ajax, name="create_project_ajax"),
     path("projects/<uuid:id>/edit/", edit_project, name="edit_project"),
     path("projects/<uuid:id>/delete/", delete_project, name="delete_project"),
     path("api/projects/", get_projects_json, name="get_projects_json"),
@@ -57,7 +59,8 @@ urlpatterns = [
 
     # URL Education
     path("education/", show_education, name="show_education"),
-    path("education/add/", create_education, name="create_education"),
+    # path("education/add/", create_education, name="create_education"),
+    path("education/add-ajax/", create_education_ajax, name="create_education_ajax"),
     path("education/<uuid:id>/edit/", edit_education, name="edit_education"),
     path("education/<uuid:id>/delete/", delete_education, name="delete_education"),
     path("api/educations/", get_educations_json, name="get_educations_json"),
@@ -66,8 +69,6 @@ urlpatterns = [
     path("register/", register, name="register"),
     path("login/", login_user, name="login"),
     path("logout/", logout_user, name="logout"),
-
-    path("projects/add-ajax/", create_project_ajax, name="create_project_ajax"),
 ]
 
 if settings.DEBUG:
