@@ -12,7 +12,7 @@ from main.views import (
     create_experience_ajax,
     # projects
     show_projects,
-    create_project,
+    # create_project,
     edit_project,
     delete_project,
     get_projects_json,
@@ -49,7 +49,7 @@ urlpatterns = [
 
     # URL Projects
     path("projects/", show_projects, name="show_projects"),
-    path("projects/add/", create_project, name="create_project"),
+    # path("projects/add/", create_project, name="create_project"),
     path("projects/<uuid:id>/edit/", edit_project, name="edit_project"),
     path("projects/<uuid:id>/delete/", delete_project, name="delete_project"),
     path("api/projects/", get_projects_json, name="get_projects_json"),

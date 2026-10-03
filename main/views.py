@@ -79,7 +79,7 @@ def create_education(request):
     if not request.user.is_superuser:
         raise PermissionDenied
     form = EducationForm(request.POST or None, request.FILES or None)
-
+ 
     if form.is_valid() and request.method == "POST":
         form.save()
         messages.success(request, "Pendidikan baru berhasil ditambahkan!")
@@ -181,7 +181,7 @@ def create_experience_ajax(request):
             {"message": "Hanya pemilik portofolio yang dapat menambahkan pengalaman."},
             status=403,
         )
-
+ 
     form = ExperienceForm(request.POST, request.FILES)
     if form.is_valid():
         experience = form.save()
@@ -275,9 +275,12 @@ def get_projects_json(request):
         projects = projects.filter(
             Q(title__icontains=title_query) | Q(description__icontains=title_query)
         )
-    if filter_type == "starred" and request.user.is_authenticated:
-        projects = projects.filter(starred_by=request.user)
-
+    if filter_type == "starred":
+        if request.user.is_authenticated:
+            projects = projects.filter(starred_by=request.user)
+        else:
+            projects = projects.none()
+ 
     data = []
     for project in projects:
         starred_users = list(project.starred_by.all())
@@ -308,21 +311,22 @@ def show_projects(request):
     return render(request, "projects.html", context)
 
 # menambahkan data project
-@login_required(login_url="/login/")
-def create_project(request):
-    if not request.user.is_superuser:
-        raise PermissionDenied
-    form = ProjectForm(request.POST or None, request.FILES or None)
-    if form.is_valid() and request.method == "POST":
-        form.save()
-        return redirect("main:show_projects")
+# ini jadinya juga gakepakai lagi
+# @login_required(login_url="/login/")
+# def create_project(request):
+#     if not request.user.is_superuser:
+#         raise PermissionDenied
+#     form = ProjectForm(request.POST or None, request.FILES or None)
+#     if form.is_valid() and request.method == "POST":
+#         form.save()
+#         return redirect("main:show_projects")
 
-    context = {
-        "form": form,
-        "name": "Elisia Catherine",
-        "project": None,
-    }
-    return render(request, "project_form.html", context)
+#     context = {
+#         "form": form,
+#         "name": "Elisia Catherine",
+#         "project": None,
+#     }
+#     return render(request, "project_form.html", context)
 
 # mengedit data project yang sudah ada
 @login_required(login_url="/login/")
@@ -361,8 +365,8 @@ def toggle_star_project(request, project_id):
     project = get_object_or_404(Project, pk=project_id)
 
     if request.method == "POST":
-        # Kalau akun ini sudah pernah memberi star, batalkan star-nya.
-        # Kalau belum, tambahkan star.
+        # Kalau akunnya udah pernah kaish star, batalkan star-nya
+        # Kalau belum, tambahkan star
         if request.user in project.starred_by.all():
             project.starred_by.remove(request.user)
         else:

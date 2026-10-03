@@ -18,9 +18,10 @@
                 aria-label="Tutup form tambah proyek">×</button>
 
         <h2 id="add-project-modal-title">Tambah Proyek Baru</h2>
+        <!-- mengubah urlnya ke yg ajax -->
         <form id="project-form"
               method="post" enctype="multipart/form-data"
-              action="{% url 'main:create_project' %}"
+              action="{% url 'main:create_project_ajax' %}"
               class="experience-form">
             {% csrf_token %}
             {% for field in form %}
