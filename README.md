@@ -133,4 +133,23 @@ Thank youuu :3
 
 <details>
 <summary><h3>Tugas 5</h3></summary>
+
+1. Dari yang saya pahami di selama di kelas dan selama mengerjakan tugas ini, debouncing adalah suatu metode untuk menunda suatu fungsi dieksekusi sampai user/pengguna website kita berhenti melakukan input/aksi selama waktu yang sudah ditentukan. Teknik ini penting untuk diimplementasikan pada fitur searching yang menggunakan AJAX karena setiap ketikan input dari user akan memicu request. Dari yang dijelaskan oleh Bu Jess, server akan kewalahan ketika dihujani request terus menerus di mana request-request tersebut belum tentu diperlukan semuanya. Dengan adanya debouncing jumlah request yang masuk ke server bisa berkurang dan bebannya lebih ringan.
+
+2. Sebuah fetch() membutuhkan waktu karena ada proses menunggu jawaban dari server, di sini await diperlukan untuk memberhentikan atau membuat jeda dalam eksekusi kode sampai jawaban (promise) dari server benar-benar selesai. Jika kita tidak menggunakan await, kode JS akan langsung eksekusi baris selanjutnya sebelum server selesai memberikan jawaban untuk fetch()-nya, ini akan berakibat error/undefined saat melakukan response.json() karena datanya masih belum diterima.
+
+3. Serangan XSS (Cross-Site Scripting) adalah sebuah serangan yang dilakukan dengan si penyerang memasukkan sebuah kode, misalnya yang ada pada test kita : ```<img src="x" onerror="alert(1)">``` ke dalam suatu kolom input, browser menganggapnya sebagai sebuat kode html yang perlu dirender di browser user. Untuk template django, dia sudah memiliki autoescape bawaan, di mana secara defaultnya django akan melakukan HTML escaping --> jadi karakter untuk < dan > akan diubah menjadi teks biasa dan tidak akan di ekseskusi. Berbeda dengan JS yang memasukkan data ke halaman lewat innerHTML, sehingga browser mengganggapnya sebagai HTML asli dan tidak adanya fitur pengamananan otomatis.
+
+AI disclosure:
+AI yang saya gunakan : ChatGPT (https://chatgpt.com/share/6ac3b354-5340-83ec-bbaf-ee11de3b2bd9)
+
+AI ini saya gunakan untuk mencari informasi lebih mengenai AJAX dan XSS, selain itu saya gunakan juga untuk berdiskusi mengenai pemahaman yang sudah saya miliki selama mengikuti kelas. Selain itu saya juga mengirimkan minimal checklist untuk tugas 5 ini dan meminta dibuatkan skenario test sebagai user guest, user biasa, editor, dan admin agar lebih mudah mengeceknya apakah sudah sesuai dengan spesifikasi yang diinginkan.
+
+Semua ouput yang ChatGPT berikan sudah saya baca dengan baik dan tidak menelan mentah-mentah informasi yang diberikan, saya menjawab pertanyaan refleksi menurut pemahaman dan bahasa saya sendiri.
+
+Sumber belajar:
+https://pbp.cs.ui.ac.id/tutorial/tutorial-5.html
+
+Thank youuuu^^
+
 <details>
