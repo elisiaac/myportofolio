@@ -264,12 +264,12 @@ def edit_experience(request, experience_id):
 def delete_experience(request, experience_id):
     if not request.user.is_superuser:
         raise PermissionDenied
-    
+
     experience = get_object_or_404(Experience, pk=experience_id)
     if request.method == "POST":
         experience.delete()
-        messages.success(request, "Pengalaman berhasil dihapus!")
-        return redirect("main:show_experience")
+        if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            return JsonResponse({"message": "Pengalaman berhasil dihapus."})
     return redirect("main:show_experience")
 
 # untuk star di experience (mendukung AJAX -> JSON, fallback redirect)
