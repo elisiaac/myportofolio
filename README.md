@@ -58,6 +58,9 @@ Membuat page experience yang diisi dengan 4 pengalaman
 Saya mengimplementasikan  CRUD dan penyajian data JSON pada modul Experience dengan merefaktor template agar mewarisi base.html. Halaman create dan update data menggunakan satu berkas template yang sama (experience_form.html), di mana judul halaman dan tombol besifat dinamis dengan adanya logika percabangan {% if experience %}.
 ### Week 5
 Saya menerapkan autentikasi pengguna dan Role-Based Access Control pada 4 tingkatan peran (Anonim, Member, Editor, dan Superuser) yang diterapkan dengan proteksi ganda berupa penyembunyian kontrol di template dan dalam sisi server (redirect login serta HTTP 403 Forbidden), mengintegrasikan fitur interaktif starring berbasis ManyToManyField, menjaga keamanan endpoint serialisasi JSON menggunakan use_natural_foreign_keys=True. Untuk fitur ekstra, interaktivitas, atau elemen UI/UX yang relevan di luar instruksi minggu ini saya menambahkan button filter "favorites" yang akan hanya menampilkan project-project yang sudah di bintangi oleh user tersebut.
+### Week 6
+### Week 6
+Saya mengimplementasikan AJAX pada modul Education, Experience, dan Projects dengan mengubah halaman daftar agar hanya merender kerangka, lalu memuat data lewat fetch() dari endpoint yang menyusun respons JSON secara manual dengan JsonResponse, termasuk jumlah star dan status star pengguna yang sedang login. Halaman dilengkapi state loading, data kosong, dan error, serta pencarian AJAX dengan debouncing 300 ms. Form tambah data ditampilkan dalam modal dengan view POST berbasis ModelForm yang membalas JSON berstatus 201, 400, dan 403, di mana hak akses dicek di dalam view dan token CSRF dikirim lewat header X-CSRFToken, lalu hasilnya diinformasikan lewat toast dan daftar diperbarui tanpa reload. Untuk keamanan, saya menerapkan perlindungan XSS dengan strip_tags pada method clean_<field> di ModelForm serta escaping setiap nilai teks yang disisipkan lewat JavaScript. Sebagai fitur ekstra, saya menambahkan modal konfirmasi hapus berbasis AJAX yang dipakai bersama oleh semua kartu dan star tanpa reload pada Experience, serta pesan pencarian yang menampilkan kata yang tidak ditemukan sesuai yang diketikan oleh pengguna.
 
 ## Pertanyaan Reflektif
 <details>
@@ -127,3 +130,7 @@ Untuk tugas 4 ini saya hanya menggunakan sumber-sumber belajar dari website PBP,
 
 Thank youuu :3
 </details>
+
+<details>
+<summary><h3>Tugas 5</h3></summary>
+<details>
