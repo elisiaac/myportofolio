@@ -56,7 +56,7 @@
 
     {% if user.is_superuser %}
         {% include "components/experience_form_modal.html" %}
-
+    <!-- delete modal yang akan muncul saat superuser melakukan aksi pada tombol delete di belakang card experience -->
         <div id="delete-experience-modal"
              class="project-form-modal"
              popover="auto"
@@ -228,7 +228,7 @@ async function fetchExperiences(searchQuery = "") {
         const data = await response.json();
         if (data.length === 0) {
             emptyMessage.textContent = searchQuery
-                ? `Tidak ditemukan pengalaman untuk pencarian "${searchQuery}".`
+                ? `Tidak ditemukan pengalaman untuk pencarian "${searchQuery}".` // return nilai dari query yang diinput oleh user --> jadi lebih interaktif
                 : (FILTER_TYPE === 'starred'
                     ? 'Belum ada pengalaman yang kamu beri star.'
                     : 'Belum ada pengalaman yang ditambahkan.');
@@ -336,7 +336,7 @@ gridContainer.addEventListener('submit', async function (event) {
 });
 
 // ---------- Modal untuk hapus (satu modal dipakai bareng) ----------
-// supaya jelas kalau berhasil dihapus
+// supaya jelas kalau berhasil dihapus --> user ga bingung apakah aksi berhasil dilakukan atau gagal
 const deleteModal = document.getElementById('delete-experience-modal');
 const deleteForm = document.getElementById('delete-experience-form');
 const deleteName = document.getElementById('delete-experience-name');

@@ -27,6 +27,7 @@
     </form>
 
     <!-- ini Loading / Error / Empty state -->
+     <!-- Memberikan tampilan kepada user untuk menjelaskan kondisi yang sedang terjadi -->
     <div id="loading" class="empty-state hide"><p>Memuat riwayat pendidikan...</p></div>
     <div id="error" class="empty-state hide"><p>Gagal memuat data pendidikan. Silakan coba lagi.</p></div>
     <div id="empty" class="empty-state hide"><p id="empty-message">Belum ada riwayat pendidikan yang ditambahkan.</p></div>
@@ -36,7 +37,7 @@
 
 {% if user.is_superuser %}
     {% include "components/education_form_modal.html" %}
-
+    <!-- delete modal yang akan muncul pada saat super user melakukan aksi pada tombol delete di card education -->
     <div id="delete-education-modal"
          class="project-form-modal"
          popover="auto"
@@ -172,8 +173,8 @@ async function fetchEducations(searchQuery = "") {
         const data = await response.json();
         if (data.length === 0) {
             emptyMessage.textContent = searchQuery
-                ? `Tidak ditemukan riwayat pendidikan untuk pencarian "${searchQuery}".`
-                : 'Belum ada riwayat pendidikan yang ditambahkan.';
+                ? `Tidak ditemukan riwayat pendidikan untuk pencarian "${searchQuery}".` // return nilai dari query yang diinput oleh user --> jadi lebih interaktif
+                : 'Belum ada riwayat pendidikan yang ditambahkan.'; // kondisi yang ditampilkan saat kosong
             displayPageSection({ showEmpty: true });
         } else {
             gridContainer.innerHTML = '';
@@ -254,7 +255,7 @@ if (educationForm) {
 }
 
 // ---------- Modal untuk hapus (satu modal dipakai bareng) ----------
-// supaya jelas kalau berhasil dihapus
+// supaya jelas kalau berhasil dihapus --> user ga bingung apakah aksi berhasil dilakukan atau gagal
 const deleteModal = document.getElementById('delete-education-modal');
 const deleteForm = document.getElementById('delete-education-form');
 const deleteName = document.getElementById('delete-education-name');

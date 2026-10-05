@@ -73,7 +73,7 @@
 
     {% if user.is_superuser %}
         {% include "components/project_form_modal.html" %}
-
+    <!-- delete modal yang akan muncul saat superuser melakukan aksi pada tombol delete di belakang card projects -->
         <div id="delete-project-modal"
              class="project-form-modal"
              popover="auto"
@@ -195,7 +195,9 @@ function buildProjectCardElement(item) {
     return article;
 }
 
+// ---------- Ambil data projects (fetch) ----------
 async function fetchProjects(searchQuery = "") {
+    // batalkan request sebelumnya supaya hasil lama tidak menimpa hasil baru
     if (projectsAbortController) projectsAbortController.abort();
     projectsAbortController = new AbortController();
 
@@ -216,7 +218,7 @@ async function fetchProjects(searchQuery = "") {
         const data = await response.json();
         if (data.length === 0) {
             emptyMessage.textContent = searchQuery
-                ? `Tidak ditemukan proyek untuk pencarian "${searchQuery}".`
+                ? `Tidak ditemukan proyek untuk pencarian "${searchQuery}".` // return nilai dari query yang diinput oleh user --> jadi lebih interaktif
                 : (FILTER_TYPE === 'starred'
                     ? 'Belum ada proyek yang kamu beri star.'
                     : 'Belum ada proyek yang ditambahkan.');
@@ -315,7 +317,7 @@ searchForm.addEventListener("submit", function (event) {
 });
 
 // ---------- Modal untuk hapus (satu modal dipakai bareng) ----------
-// supaya jelas kalau berhasil dihapus
+// supaya jelas kalau berhasil dihapus --> user ga bingung apakah aksi berhasil dilakukan atau gagal
 const deleteModal = document.getElementById('delete-project-modal');
 const deleteForm = document.getElementById('delete-project-form');
 const deleteName = document.getElementById('delete-project-name');
