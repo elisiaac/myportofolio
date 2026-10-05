@@ -380,10 +380,12 @@ def edit_project(request, id):
 def delete_project(request, id):
     if not request.user.is_superuser:
         raise PermissionDenied
-    
+
     if request.method == "POST":
         project = get_object_or_404(Project, pk=id)
         project.delete()
+        if request.headers.get("X-Requested-With") == "XMLHttpRequest":
+            return JsonResponse({"message": "Proyek berhasil dihapus."})
     return redirect("main:show_projects")
 
 # Tutorial 4 : star for project
