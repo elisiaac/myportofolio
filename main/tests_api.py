@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, User
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
@@ -46,7 +46,7 @@ class ProjectAPITests(APITestCase):
         payload = {
             "title": "Proyek Baru",
             "description": "Deskripsi proyek baru",
-            "category": "Web Development",
+            "category": "web",
             "project_url": "https://new-example.com",
         }
         response = self.client.post(self.list_url, payload, format="json")
@@ -78,27 +78,33 @@ class ProjectAPITests(APITestCase):
         [status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN],
     )
 
-    def test_editor_permissions_on_project(self):
-        """Editor boleh melakukan PATCH pada project, tapi ditolak saat POST (create) atau DELETE"""
-        editor_group, _ = Group.objects.get_or_create(name="Editor")
-        editor_user = User.objects.create_user(username="projecteditor", password="password123")
-        editor_user.groups.add(editor_group)
+  def test_editor_permissions_on_project(self):
+    """Editor boleh melakukan PATCH pada project, tapi ditolak saat POST (create) atau DELETE"""
+    editor_group, _ = Group.objects.get_or_create(name="Editor")
+    editor_user = User.objects.create_user(
+        username="projecteditor", password="password123"
+    )
+    editor_user.groups.add(editor_group)
 
-        # 1. Editor mencoba POST (create) -> Harus ditolak (403 Forbidden)
-        self.client.force_authenticate(user=editor_user)
-        response_post = self.client.post(self.list_url, {
+    # 1. Editor mencoba POST (create) -> Harus ditolak (403 Forbidden)
+    self.client.force_authenticate(user=editor_user)
+    response_post = self.client.post(
+        self.list_url,
+        {
             "title": "Proyek Editor",
             "description": "Test",
-            "category": "Web Development"
-        }, format="json")
-        self.assertEqual(response_post.status_code, status.HTTP_403_FORBIDDEN)
+            "category": "Web Development",
+        },
+        format="json",
+    )
+    self.assertEqual(response_post.status_code, status.HTTP_403_FORBIDDEN)
 
-        # 2. Editor mencoba PATCH (update) -> Harus diizinkan (200 OK)
-        response_patch = self.client.patch(self.detail_url, {
-            "title": "Updated Project by Editor"
-        }, format="json")
-        self.assertEqual(response_patch.status_code, status.HTTP_200_OK)
+    # 2. Editor mencoba PATCH (update) -> Harus diizinkan (200 OK)
+    response_patch = self.client.patch(
+        self.detail_url, {"title": "Updated Project by Editor"}, format="json"
+    )
+    self.assertEqual(response_patch.status_code, status.HTTP_200_OK)
 
-        # 3. Editor mencoba DELETE -> Harus ditolak (403 Forbidden)
-        response_delete = self.client.delete(self.detail_url)
-        self.assertEqual(response_delete.status_code, status.HTTP_403_FORBIDDEN)
+    # 3. Editor mencoba DELETE -> Harus ditolak (403 Forbidden)
+    response_delete = self.client.delete(self.detail_url)
+    self.assertEqual(response_delete.status_code, status.HTTP_403_FORBIDDEN)
