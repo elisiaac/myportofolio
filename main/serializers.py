@@ -1,6 +1,6 @@
 from django.utils.html import strip_tags
 from rest_framework import serializers
-from main.models import Project, Experience
+from main.models import Project, Experience, Education
 
 class ProjectSerializer(serializers.ModelSerializer):
     star_count = serializers.SerializerMethodField()
@@ -89,3 +89,33 @@ class ExperienceSerializer(serializers.ModelSerializer):
 
     def get_starred_by_names(self, obj):
         return ", ".join(user.username for user in obj.starred_by.all())
+    
+
+class EducationSerializer(serializers.ModelSerializer):
+    is_ongoing = serializers.BooleanField(read_only=True)
+
+    class Meta:
+        model = Education
+        fields = [
+            "id", "institution", "degree",
+            "started_at", "ended_at", "is_ongoing", "logo",
+        ]
+        read_only_fields = ["id"]
+
+    def validate_institution(self, value):
+        value = strip_tags(value).strip()
+        if not value:
+            raise serializers.ValidationError("Institution cannot be empty.")
+        return value
+
+    def validate_degree(self, value):
+        value = strip_tags(value).strip()
+        if not value:
+            raise serializers.ValidationError("Degree cannot be empty.")
+        return value
+
+    def validate(self, data):
+        if data.get('ended_at') and data.get('started_at'):
+            if data['ended_at'] < data['started_at']:
+                raise serializers.ValidationError("Tanggal selesai tidak boleh sebelum tanggal mulai.")
+        return data
