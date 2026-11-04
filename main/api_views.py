@@ -8,8 +8,8 @@ from rest_framework.decorators import (
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from main.models import Project, Experience
-from main.serializers import ProjectSerializer, ExperienceSerializer
+from main.models import Project, Experience, Education
+from main.serializers import ProjectSerializer, ExperienceSerializer, EducationSerializer
 from .permissions import IsPortfolioOwnerOrEditorOrReadOnly
 
 
@@ -158,3 +158,48 @@ def toggle_star_experience_api(request, experience_id):
         },
         status=status.HTTP_200_OK,
     )
+
+# ==========================================
+# VIEWS UNTUK EDUCATION
+# ==========================================
+@api_view(["GET", "HEAD", "POST"])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsPortfolioOwnerOrEditorOrReadOnly])
+def education_list(request):
+    if request.method in ("GET", "HEAD"):
+        educations = Education.objects.order_by("-started_at")
+        title_query = request.query_params.get("title", "").strip()
+        if title_query:
+            educations = educations.filter(
+                Q(institution__icontains=title_query) | Q(degree__icontains=title_query)
+            )
+        serializer = EducationSerializer(educations, many=True, context={"request": request})
+        return Response(serializer.data)
+
+    serializer = EducationSerializer(data=request.data, context={"request": request})
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(["GET", "HEAD", "PUT", "PATCH", "DELETE"])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsPortfolioOwnerOrEditorOrReadOnly])
+def education_detail(request, education_id):
+    education = get_object_or_404(Education, pk=education_id)
+    
+    if request.method in ("GET", "HEAD"):
+        serializer = EducationSerializer(education, context={"request": request})
+        return Response(serializer.data)
+        
+    if request.method == "DELETE":
+        education.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+        
+    serializer = EducationSerializer(
+        education, data=request.data, partial=request.method == "PATCH",
+        context={"request": request},
+    )
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(serializer.data)
