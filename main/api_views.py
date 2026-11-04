@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication
@@ -7,10 +8,14 @@ from rest_framework.decorators import (
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from main.models import Project
-from main.serializers import ProjectSerializer
+from main.models import Project, Experience
+from main.serializers import ProjectSerializer, ExperienceSerializer
 from .permissions import IsPortfolioOwnerOrEditorOrReadOnly
 
+
+# ==========================================
+# VIEWS UNTUK PROJECT
+# ==========================================
 @api_view(["GET", "HEAD", "POST"])
 @authentication_classes([SessionAuthentication])
 @permission_classes([IsPortfolioOwnerOrEditorOrReadOnly])
@@ -76,6 +81,80 @@ def toggle_star_project(request, project_id):
             "status": "success",
             "starred": starred,
             "star_count": project.starred_by.count(),
+        },
+        status=status.HTTP_200_OK,
+    )
+
+
+# ==========================================
+# VIEWS UNTUK EXPERIENCE
+# ==========================================
+@api_view(["GET", "HEAD", "POST"])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsPortfolioOwnerOrEditorOrReadOnly])
+def experience_list(request):
+    if request.method in ("GET", "HEAD"):
+        experiences = Experience.objects.prefetch_related("starred_by").order_by("-started_at")
+        
+        title_query = request.query_params.get("title", "").strip()
+        if title_query:
+            experiences = experiences.filter(
+                Q(organization__icontains=title_query) | Q(title__icontains=title_query)
+            )
+            
+        serializer = ExperienceSerializer(experiences, many=True, context={"request": request})
+        return Response(serializer.data)
+
+    serializer = ExperienceSerializer(data=request.data, context={"request": request})
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+@api_view(["GET", "HEAD", "PUT", "PATCH", "DELETE"])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsPortfolioOwnerOrEditorOrReadOnly])
+def experience_detail(request, experience_id):
+    experience = get_object_or_404(
+        Experience.objects.prefetch_related("starred_by"), pk=experience_id,
+    )
+    
+    if request.method in ("GET", "HEAD"):
+        serializer = ExperienceSerializer(experience, context={"request": request})
+        return Response(serializer.data)
+        
+    if request.method == "DELETE":
+        experience.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+        
+    serializer = ExperienceSerializer(
+        experience, data=request.data, partial=request.method == "PATCH",
+        context={"request": request},
+    )
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+    return Response(serializer.data)
+
+
+@api_view(["POST"])
+@authentication_classes([SessionAuthentication])
+@permission_classes([IsAuthenticated])
+def toggle_star_experience_api(request, experience_id):
+    experience = get_object_or_404(Experience, pk=experience_id)
+    user = request.user
+    
+    if user in experience.starred_by.all():
+        experience.starred_by.remove(user)
+        starred = False
+    else:
+        experience.starred_by.add(user)
+        starred = True
+        
+    return Response(
+        {
+            "status": "success",
+            "starred": starred,
+            "star_count": experience.starred_by.count(),
         },
         status=status.HTTP_200_OK,
     )

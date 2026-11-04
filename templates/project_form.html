@@ -11,7 +11,13 @@
                     {% if project %}Edit Project{% else %}Add New Project{% endif %}
                 </h1>
                 
-                <form method="post" enctype="multipart/form-data" class="experience-form">
+                <!-- mengubah urlnya ke yg ajax -->
+                <!-- new note: logika URL dan method ditaruh di data-* attributes -->
+                <form id="project-form-main" 
+                      data-method="{% if project %}PATCH{% else %}POST{% endif %}"
+                      data-url="{% if project %}{% url 'api:project-detail' project.id %}{% else %}{% url 'api:project-list' %}{% endif %}"
+                      data-redirect="{% url 'main:show_projects' %}"
+                      method="post" enctype="multipart/form-data" class="experience-form">
                     {% csrf_token %}
                     {% for field in form %}
                         <div class="form-group">
@@ -33,4 +39,42 @@
             </div>
         </section>
     </main>
+
+<script>
+document.getElementById('project-form-main').addEventListener('submit', async function(e) {
+    e.preventDefault(); 
+    const submitBtn = this.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+
+    const formData = new FormData(this);
+    
+    // Mengambil nilai method dan url dari data attributes di tag form atas
+    const method = this.dataset.method;
+    const endpoint = this.dataset.url;
+    const redirectUrl = this.dataset.redirect;
+
+    try {
+        const response = await fetch(endpoint, {
+            method: method,
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                // Jangan set Content-Type ke application/json karena ini mengirim form data (termasuk file/gambar)
+            },
+            body: formData
+        });
+
+        if (response.ok) {
+            window.location.href = redirectUrl;
+        } else {
+            const data = await response.json();
+            alert('Gagal menyimpan: ' + JSON.stringify(data));
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Terjadi kesalahan jaringan.');
+    } finally {
+        submitBtn.disabled = false;
+    }
+});
+</script>
 {% endblock content %}
