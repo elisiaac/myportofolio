@@ -2,7 +2,7 @@ from django.contrib.auth.models import Group, User
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase, APIClient
-from main.models import Project, Experience
+from main.models import Project, Experience, Education
 from datetime import date
 from django.utils import timezone
 
@@ -171,3 +171,43 @@ class ExperienceAPITests(APITestCase):
         response_delete = self.client.delete(self.detail_url)
         self.assertEqual(response_delete.status_code, status.HTTP_403_FORBIDDEN)
         self.assertEqual(Experience.objects.count(), 1)
+
+
+class EducationAPITests(APITestCase):
+
+    def setUp(self):
+        self.superuser = User.objects.create_superuser(
+            username="eduadmin", password="password123"
+        )
+        self.education = Education.objects.create(
+            institution="Universitas Indonesia",
+            degree="Sistem Informasi",
+            started_at=date(2025, 8, 1)
+        )
+        self.list_url = reverse("api:education-list")
+        self.detail_url = reverse(
+            "api:education-detail", kwargs={"education_id": self.education.id}
+        )
+
+    def test_get_education_list(self):
+        response = self.client.get(self.list_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 1)
+
+    def test_create_education_authorized(self):
+        self.client.force_authenticate(user=self.superuser)
+        payload = {
+            "institution": "SMA Negeri 1 Depok",
+            "degree": "MIPA",
+            "started_at": "2022-07-01",
+            "ended_at": "2025-05-01"
+        }
+        response = self.client.post(self.list_url, payload, format="json")
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(Education.objects.count(), 2)
+
+    def test_delete_education_authorized(self):
+        self.client.force_authenticate(user=self.superuser)
+        response = self.client.delete(self.detail_url)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Education.objects.count(), 0)

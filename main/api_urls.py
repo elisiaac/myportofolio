@@ -13,4 +13,8 @@ urlpatterns = [
     path("experiences/", api_views.experience_list, name="experience-list"),
     path("experiences/<uuid:experience_id>/", api_views.experience_detail, name="experience-detail"),
     path("experiences/<uuid:experience_id>/star/", api_views.toggle_star_experience_api, name="toggle-star-experience"),
+
+    # Endpoints untuk Education (TI 6)
+    path("educations/", api_views.education_list, name="education-list"),
+    path("educations/<uuid:education_id>/", api_views.education_detail, name="education-detail"),
 ]
