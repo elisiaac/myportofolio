@@ -62,6 +62,10 @@ Saya menerapkan autentikasi pengguna dan Role-Based Access Control pada 4 tingka
 ### Week 6
 Saya mengimplementasikan AJAX pada modul Education, Experience, dan Projects dengan mengubah halaman daftar agar hanya merender kerangka, lalu memuat data lewat fetch() dari endpoint yang menyusun respons JSON secara manual dengan JsonResponse, termasuk jumlah star dan status star pengguna yang sedang login. Halaman dilengkapi state loading, data kosong, dan error, serta pencarian AJAX dengan debouncing 300 ms. Form tambah data ditampilkan dalam modal dengan view POST berbasis ModelForm yang membalas JSON berstatus 201, 400, dan 403, di mana hak akses dicek di dalam view dan token CSRF dikirim lewat header X-CSRFToken, lalu hasilnya diinformasikan lewat toast dan daftar diperbarui tanpa reload. Untuk keamanan, saya menerapkan perlindungan XSS dengan strip_tags pada method clean_<field> di ModelForm serta escaping setiap nilai teks yang disisipkan lewat JavaScript. Sebagai fitur ekstra, saya menambahkan modal konfirmasi hapus berbasis AJAX yang dipakai bersama oleh semua kartu dan star tanpa reload pada Experience, serta pesan pencarian yang menampilkan kata yang tidak ditemukan sesuai yang diketikan oleh pengguna.
 
+### Week 7
+Pada week ini saya mengimplementasikan tugas 6. Dengan implementasi Django REST Framework (DRF) pada modul Education, Project, dan Experience. Implemennya ini mencakup pembuatan ModelSerializer dengan validasi input, penyusunan endpoint API untuk operasi CRUD beserta fitur pencariannya, lalu adanya permission class berbasis peran untuk Pengunjung tanpa akun, Pengunjung dengan akun terdaftar, Editor, dan Admin (Superuser). Di sini saya juga menambahkan test (pengujian fiturnya) dan mengerjakan pertanyaan reflektif serta AI disclosure.
+
+
 ## Pertanyaan Reflektif
 <details>
 <summary><h3>Tugas 1</h3></summary>
@@ -151,4 +155,33 @@ Sumber belajar:
 https://pbp.cs.ui.ac.id/tutorial/tutorial-5.html
 
 Thank youuuu^^
+</details>
+
+<details>
+<summary><h3>Tugas 6</h3></summary>
+
+1. REST yang memiliki kepanjangan REpresentational State Transfer adalah sebuah toolkit untuk komunikasi antara aplikasi yang memakai standar HTTP. Dan mengapa mereturn data dalam JSON saja belum cukup dikatakan RESTful? karena harus stateless (tidak menyimpan status sesi user di server), punya endpoint URL yang rapih sesuai dengan fungsinya, dan memanfaatkan HTTP status codesnya dengan tepat juga. 
+
+Untuk perbedaan PUT dan PATCH -> PUT digunakan jika kita ingin menimpa atau mengganti satu data secara keseluruhan, jadi kalau ada bagian isi yang tidak dikirim, bagian itu akan otomatis dikosongkan. Sementara untuk PATCH itu digunakan jika hanya ingin mengedit sebagian datanya saja, contoh penggunaannya kalau editor/superuser hanya ingin mengubah foto atau tanggal selesai di experience tanpa merubah bagian lain seperti judulnya atau jabatannya.
+
+2. Peran serializer adalah sebagai "penerjemah" otomatis yang mengubah objek model django menjadi tipe data bawaan python agar mudah untuk diubah jadi JSON. Selain itu, serializernya berfungsi untuk memvalidasi dan membersihkan data input dari user (misalnya pakai fungsi strip_tags) sebelum dayanya di simpan ke database. Keuntungannya dibanding merakit manual seperti di tutorial 5 adalah kodenya itu jauh lebih clean dan tidak rawan error, bisa memfilter data yang sensitif agar tidak terekspos ke publik, dan semua logika pemrosesan terpusat dengan rapih di satu tempat.
+
+3. Autentikasi adalah proses untuk mengenali identitas dari user seperti mengecek rolenya saat mengakses web. Kalau otorisasi adalah proses untuk menentukan hak aksesnya seperti sebagai role editor apa saja yang bisa dilakukan oleh user tersebut.
+
+Hak akses itu wajib untuk diperiksa menggunakan permission class di sisi server karena untuk "sekadar" menyembunyikan sebuahtombol di template HTML saja kurang aman. Orang-orang bisa dengan mudah menembus batasannya dengan menembak endpoint API kita secara langsung lewat console browser, dsb. Jadi permission class itu bertindak sebagai keamanan utama di server yang tidak bisa diakali walaupun tombolnya itu dihide.
+
+4. Ketika API kita pakai SessionAuthentication, Djangonya akan mengandalkan cookie sesi bawaan dari browser untuk mengenali user yang lagi login. karena itu, permintaan yang mengubah data (seperti : POST, PUT, PATCH, DELETE) tetap wajib memakai token CSRF agar websitenya tidak bisa sembarangan membajak sesi cookie untuk mengirimkan request yang palsu (Cross-Site Request Forgery) seolah olah itu adalah kita.
+
+Kalau untuk penggunaan force_authenticate, saat melalukan testing tidak cukup untuk membuktikan perlindungan CSRF berjalan karena fungsi tersebut seperti memaksa masuk dan langsung menambahkan user ke dalam request tanpa lewat proses pengecekan login dan cookie dengan normaal atau seharusnya. Makanya kita wajib pakai APIClient(enforce_csrf_checks=True) dan juga .login() agar simulasi dari testingnya melewati validasi keamanan CSRF yang asli
+
+AI disclosure:
+AI yang saya gunakan : ChatGPT (https://chatgpt.com/share/6aec5b07-9d50-83ec-afc1-4da123e64aaa)
+
+AI ini saya gunakan untuk mencari informasi lebih mengenai REST, lalu membantu mengecek kelengkapan test case di tests_api.py untuk memastikan seluruh skenario hak akses peran, karena masih ada test yang belum melengkapi seluruh syarat tugas, saya meminta AI untuk menambahkannya dan saya sesuaikan lagi dengan kode saya. Selain itu saya juga mengirimkan minimal checklist untuk tugas 6 ini dan meminta dibuatkan skenario test sebagai user guest, user biasa, editor, dan admin agar lebih mudah mengeceknya apakah sudah sesuai dengan spesifikasi yang diinginkan.
+
+Semua ouput yang ChatGPT berikan sudah saya baca dengan baik dan tidak menelan mentah-mentah informasi yang diberikan, saya menjawab pertanyaan refleksi menurut pemahaman dan bahasa saya sendiri.
+
+Sumber belajar:
+https://pbp.cs.ui.ac.id/tutorial/tutorial-7.html
+
 </details>
