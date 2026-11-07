@@ -334,8 +334,25 @@ gridContainer.addEventListener('click', async function (event) {
                 }
             });
             if (!response.ok) throw new Error('Gagal memperbarui star');
+            
+            // 1. Tangkap balasan dari API (berisi status, starred, dan star_count)
+            const data = await response.json(); 
+
+            // 2. Update tampilan tombol langsung di temp (tanpa fetch ulang)
+            if (data.starred) {
+                starBtn.classList.add('is-starred');
+                starBtn.querySelector('.star-text').textContent = 'Unstar';
+            } else {
+                starBtn.classList.remove('is-starred');
+                starBtn.querySelector('.star-text').textContent = 'Star';
+            }
+            starBtn.querySelector('.star-count').textContent = data.star_count;
+
             showToast('Berhasil', 'Status star diperbarui.', 'success');
-            fetchExperiences(searchInput.value.trim());
+            
+            // 3. HAPUS atau COMMENT baris di bawah ini biar halaman nggak lompat
+            // fetchExperiences(searchInput.value.trim()); 
+
         } catch (error) {
             console.error(error);
             showToast('Gagal', 'Tidak dapat mengubah star.', 'error');

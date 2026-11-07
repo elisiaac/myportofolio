@@ -345,8 +345,24 @@ gridContainer.addEventListener('click', async function (event) {
                 }
             });
             if (!response.ok) throw new Error('Gagal memperbarui star');
+            
+            // 1. Tangkap balasan dari API
+            const data = await response.json(); 
+
+            // 2. Update tampilan tombol langsung pakai innerHTML biar rapi
+            if (data.starred) {
+                starBtn.classList.add('is-starred');
+                starBtn.innerHTML = `<span aria-hidden="true">★</span> Unstar <span class="star-count">${data.star_count}</span>`;
+            } else {
+                starBtn.classList.remove('is-starred');
+                starBtn.innerHTML = `<span aria-hidden="true">★</span> Star <span class="star-count">${data.star_count}</span>`;
+            }
+
             showToast('Berhasil', 'Status star diperbarui.', 'success');
-            fetchProjects(searchInput.value.trim());
+            
+            // 3. HAPUS atau COMMENT baris fetch ulang di bawah ini
+            // fetchProjects(searchInput.value.trim()); 
+
         } catch (error) {
             console.error(error);
             showToast('Gagal', 'Tidak dapat mengubah star.', 'error');
