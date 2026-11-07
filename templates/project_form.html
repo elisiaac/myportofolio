@@ -41,14 +41,12 @@
     </main>
 
 <script>
-document.getElementById('project-form-main').addEventListener('submit', async function(e) {
+document.getElementById(document.querySelector('form').id).addEventListener('submit', async function(e) {
     e.preventDefault(); 
     const submitBtn = this.querySelector('button[type="submit"]');
     submitBtn.disabled = true;
 
     const formData = new FormData(this);
-    
-    // Mengambil nilai method dan url dari data attributes di tag form atas
     const method = this.dataset.method;
     const endpoint = this.dataset.url;
     const redirectUrl = this.dataset.redirect;
@@ -58,7 +56,6 @@ document.getElementById('project-form-main').addEventListener('submit', async fu
             method: method,
             headers: {
                 'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-                // Jangan set Content-Type ke application/json karena ini mengirim form data (termasuk file/gambar)
             },
             body: formData
         });
@@ -67,11 +64,16 @@ document.getElementById('project-form-main').addEventListener('submit', async fu
             window.location.href = redirectUrl;
         } else {
             const data = await response.json();
-            alert('Gagal menyimpan: ' + JSON.stringify(data));
+            // Ekstrak pesan error biar rapih dibaca di toast
+            const errorMessages = Object.entries(data).flatMap(([field, errs]) =>
+                Array.isArray(errs) ? errs.map(er => `${field}: ${er}`) : [errs]
+            ).join(' ');
+            
+            showToast('Gagal menyimpan', errorMessages || 'Terjadi kesalahan pada input data.', 'error');
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('Terjadi kesalahan jaringan.');
+        showToast('Kesalahan Jaringan', 'Terjadi kesalahan jaringan. Gagal terhubung ke server.', 'error');
     } finally {
         submitBtn.disabled = false;
     }

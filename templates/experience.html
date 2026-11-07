@@ -283,16 +283,14 @@ async function addExperience(event) {
 
     try {
         const formData = new FormData(experienceForm);
-        const payload = Object.fromEntries(formData.entries());
 
         const response = await fetch(BASE_EXPERIENCES_ENDPOINT, {
             method: 'POST',
             headers: { 
                 'Accept': 'application/json',
-                'Content-Type': 'application/json',
                 'X-CSRFToken': getCookie('csrftoken') 
             },
-            body: JSON.stringify(payload),
+            body: formData,
         });
         const result = await response.json().catch(() => ({}));
 
